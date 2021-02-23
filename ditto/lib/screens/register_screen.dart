@@ -72,9 +72,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                CustomButton(
-                  name: 'Login',
-                  onTap: () => Navigator.pushNamed(context, '/login'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: CustomButton(
+                    name: 'Login',
+                    onTap: () => Navigator.pushNamed(context, '/login'),
+                  ),
                 ),
               ],
             ),

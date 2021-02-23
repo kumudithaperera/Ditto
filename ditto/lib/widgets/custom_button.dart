@@ -13,7 +13,6 @@ class CustomButton extends StatelessWidget {
       child: Container(
         width: Utils.getDesignWidth(50),
         height: Utils.getDesignHeight(30),
-        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
             border: Border.all(
               width: 2.0,

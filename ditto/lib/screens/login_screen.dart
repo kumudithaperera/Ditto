@@ -61,9 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                CustomButton(
-                  name: 'Register',
-                  onTap: () => Navigator.pushNamed(context, '/register'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: CustomButton(
+                    name: 'Register',
+                    onTap: () => Navigator.pushNamed(context, '/register'),
+                  ),
                 ),
               ],
             ),
