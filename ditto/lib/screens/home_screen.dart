@@ -10,6 +10,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //back button remover
+        leading: Container(),
+        //back button remover end
         title: Text("Home Page"),
       ),
     );

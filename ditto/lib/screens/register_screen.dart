@@ -73,10 +73,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 CustomButton(
-                    name: 'Login',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/login');
-                    }),
+                  name: 'Login',
+                  onTap: () => Navigator.pushNamed(context, '/login'),
+                ),
               ],
             ),
           ),

@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: Utils.getDesignHeight(30),
                   margin: EdgeInsets.all(5),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, '/home'),
                     child: Text(
                       "Login",
                       style: Theme.of(context).primaryTextTheme.button.copyWith(
@@ -62,10 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 CustomButton(
-                    name: 'Register',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/register');
-                    }),
+                  name: 'Register',
+                  onTap: () => Navigator.pushNamed(context, '/register'),
+                ),
               ],
             ),
           ),
