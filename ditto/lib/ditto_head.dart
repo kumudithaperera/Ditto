@@ -1,3 +1,4 @@
+import 'package:ditto/helper/colors.dart';
 import 'package:ditto/screens/home_screen.dart';
 import 'package:ditto/screens/login_screen.dart';
 import 'package:ditto/screens/register_screen.dart';
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Ditto',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+          primaryColor: PrimaryColorBasic,
         primaryTextTheme: TextTheme(
           button: TextStyle(
             fontWeight: FontWeight.bold,

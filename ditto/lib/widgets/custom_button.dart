@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String name;
   final VoidCallback onTap;
+  final Color borderColor;
 
-  CustomButton({this.name, this.onTap});
+  CustomButton({this.name, this.onTap, this.borderColor});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +17,14 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(
               width: 2.0,
-              color: Colors.orange,
+              color: borderColor,
             ),
             borderRadius: BorderRadius.all(Radius.circular(5))),
         child: Center(
           child: Text(
             name,
             style: Theme.of(context).primaryTextTheme.button.copyWith(
+              color: borderColor,
                   fontSize: 15,
                 ),
           ),
