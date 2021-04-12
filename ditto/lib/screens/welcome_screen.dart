@@ -16,6 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Utils.setScreenSizes(context);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,10 +36,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   margin: EdgeInsets.all(5),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: PrimaryColorBasic
+                      primary: primaryColorBasic
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: Text(
                       "Login",
@@ -52,10 +53,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   margin: EdgeInsets.all(5),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: PrimaryColorBasic
+                        primary: primaryColorBasic
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushReplacementNamed(context, '/register');
                     },
                     child: Text(
                       "Register",

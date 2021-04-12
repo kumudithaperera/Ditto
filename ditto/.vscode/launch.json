@@ -5,10 +5,12 @@
    "version": "0.2.0",
    "configurations": [
       
+
       {
          "name": "ditto",
          "request": "launch",
-         "type": "dart"
+         "type": "dart",
+         "program": "web/index.html",
       }
    ]
 }

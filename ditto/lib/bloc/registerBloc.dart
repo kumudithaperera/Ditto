@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:ditto/helper/enums.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RegisterBloc{
+class RegisterBloc {
+
+  final _firebaseAuth = FirebaseAuth.instance;
 
   BehaviorSubject<PersonalityTypes> _personalityTypeSubject = BehaviorSubject<PersonalityTypes>();
   Stream<PersonalityTypes> get personalityTypeStream => _personalityTypeSubject.stream;
@@ -12,6 +15,7 @@ class RegisterBloc{
 
   RegisterBloc(){
     _personalityTypeStreamController.stream.listen((type) {
+
       if(type == PersonalityTypes.ENFJ || type == PersonalityTypes.INFJ || type == PersonalityTypes.ENFP || type == PersonalityTypes.INFP){
       // green
       }
@@ -27,8 +31,14 @@ class RegisterBloc{
     });
   }
 
+  void signIn(String email, String password) async {
+    UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
-  void dispose() {
+    print(user.user.uid);
+
+  }
+
+  void dispose(){
     _personalityTypeSubject.close();
     _personalityTypeStreamController.close();
   }

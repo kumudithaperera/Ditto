@@ -1,8 +1,10 @@
+import 'package:ditto/bloc/registerBloc.dart';
 import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -13,9 +15,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  RegisterBloc _registerBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _registerBloc = Provider.of<RegisterBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.all(5),
                       child: TextField(
                         decoration: InputDecoration(
-                          focusColor: PrimaryColorBasic,
+                          focusColor: primaryColorBasic,
                           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           labelText: 'Email',
                         ),
@@ -55,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextField(
                         obscureText: true,
                         decoration: InputDecoration(
-                          focusColor: PrimaryColorBasic,
+                          focusColor: primaryColorBasic,
                           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           labelText: 'Password',
                         ),
@@ -67,9 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.all(5),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: PrimaryColorBasic
+                          primary: primaryColorBasic
                         ),
-                        onPressed: () => Navigator.pushNamed(context, '/home'),
+                        onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+                        // onPressed: () => _registerBloc.signIn("k@gmail.com", "1234567"),
                         child: Text(
                           "Login",
                           style: Theme.of(context).primaryTextTheme.button.copyWith(
@@ -82,8 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(top: 5.0),
                       child: CustomButton(
                         name: 'Register',
-                        borderColor: PrimaryColorBasic,
-                        onTap: () => Navigator.pushNamed(context, '/register'),
+                        borderColor: primaryColorBasic,
+                        onTap: () => Navigator.pushReplacementNamed(context, '/register'),
                       ),
                     ),
                   ],
