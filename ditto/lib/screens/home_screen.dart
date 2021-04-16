@@ -1,4 +1,5 @@
-import 'package:ditto/helper/colors.dart';
+import 'package:ditto/bloc/home_screen_bloc.dart';
+import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/leaderboard_widget.dart';
@@ -6,7 +7,7 @@ import 'package:ditto/widgets/points_widget.dart';
 import 'package:ditto/widgets/progress_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -19,6 +20,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  HomeScreenBloc _homeScreenBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _homeScreenBloc = Provider.of<HomeScreenBloc>(context);
+    _setTheme();
+  }
+
+  void _setTheme(){
+    _homeScreenBloc.getPersonalityType().then((value) {
+      print(value);
+      Provider.of<ThemeNotifier>(context, listen: false).themeNotifier('PersonalityTypes.$value');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Icon(Icons.logout),
               ),
-              onTap: () {},
+              onTap: () => _homeScreenBloc.logout(),
             ),
           ),
         ],

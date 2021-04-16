@@ -1,7 +1,9 @@
-import 'package:ditto/bloc/registerBloc.dart';
+import 'package:ditto/bloc/sign_in_sign_up_bloc.dart';
 import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
+import 'package:ditto/helper/validation.dart';
 import 'package:ditto/widgets/custom_button.dart';
+import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +17,17 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  RegisterBloc _registerBloc;
+  final GlobalKey<FormState> _key = GlobalKey();
+
+  SignInSignUpBloc _signInSignUpBloc;
+
+  String email, password;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _registerBloc = Provider.of<RegisterBloc>(context);
+    _signInSignUpBloc = Provider.of<SignInSignUpBloc>(context);
   }
 
   @override
@@ -44,62 +50,82 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(50),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: Utils.getDesignWidth(100),
-                      height: Utils.getDesignHeight(50),
-                      margin: EdgeInsets.all(5),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          focusColor: primaryColorBasic,
-                          contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          labelText: 'Email',
+                child: Form(
+                  key: _key,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: Utils.getDesignWidth(100),
+                        height: Utils.getDesignHeight(50),
+                        margin: EdgeInsets.all(5),
+                        child: CustomTextField(
+                          title: "Email",
+                          onChange: (email) => this.email = email,
+                          validator: (text){
+                            if(text.length == 0){
+                              return "Please fill this field";
+                            }
+                            if(!Validation.isValidEmail(text)){
+                              return "Please enter a valid email";
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                    ),
-                    Container(
-                      width: Utils.getDesignWidth(100),
-                      height: Utils.getDesignHeight(50),
-                      margin: EdgeInsets.all(5),
-                      child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          focusColor: primaryColorBasic,
-                          contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          labelText: 'Password',
+                      Container(
+                        width: Utils.getDesignWidth(100),
+                        height: Utils.getDesignHeight(50),
+                        margin: EdgeInsets.all(5),
+                        child: CustomTextField(
+                          title: "Password",
+                          obscureText: true,
+                          onChange: (password) => this.password = password,
+                          validator: (text){
+                            if(text.length == 0){
+                              return "Please fill this field";
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                    ),
-                    Container(
-                      width: Utils.getDesignWidth(50),
-                      height: Utils.getDesignHeight(30),
-                      margin: EdgeInsets.all(5),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColorBasic
-                        ),
-                        onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
-                        // onPressed: () => _registerBloc.signIn("k@gmail.com", "1234567"),
-                        child: Text(
-                          "Login",
-                          style: Theme.of(context).primaryTextTheme.button.copyWith(
-                                fontSize: 15,
-                              ),
+                      Container(
+                        width: Utils.getDesignWidth(50),
+                        height: Utils.getDesignHeight(30),
+                        margin: EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: primaryColorBasic
+                          ),
+                          onPressed: () {
+                            if(_key.currentState.validate()){
+                              _key.currentState.save();
+                              FocusScope.of(context).unfocus();
+                              _signInSignUpBloc.loginUser(
+                                email: this.email,
+                                password: this.password,
+                              );
+                            }
+                          },
+                          child: Text(
+                            "Login",
+                            style: Theme.of(context).primaryTextTheme.button.copyWith(
+                                  fontSize: 15,
+                                ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: CustomButton(
-                        name: 'Register',
-                        borderColor: primaryColorBasic,
-                        onTap: () => Navigator.pushReplacementNamed(context, '/register'),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: CustomButton(
+                          name: 'Register',
+                          borderColor: primaryColorBasic,
+                          onTap: () => Navigator.pushReplacementNamed(context, '/register'),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
