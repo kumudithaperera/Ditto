@@ -10,6 +10,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+
       child: Card(
         child: ListView.builder(
           itemCount: 10,

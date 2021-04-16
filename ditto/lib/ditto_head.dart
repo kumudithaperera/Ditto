@@ -5,6 +5,7 @@ import 'package:ditto/screens/home_screen.dart';
 import 'package:ditto/screens/login_screen.dart';
 import 'package:ditto/screens/register_screen.dart';
 import 'package:ditto/screens/welcome_screen.dart';
+import 'package:ditto/screens/settings_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
               ),
               '/register': (context) => RegisterScreen(logoPath: model.logoPath,),
               '/home': (context) => HomeScreen(logoPath: model.logoPath,),
+              '/settings': (context) => SettingScreen(),
             },
           );
         },
