@@ -60,6 +60,57 @@ class FirebaseService {
     return true;
   }
 
+  Future<bool> saveTestScore({String userId, Map<String, dynamic> map}) async {
+    await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
+      SkeletonException exc =  GeneralException(
+        error.toString(), ExceptionTypes.REQUEST_ERROR,
+      );
+      locator<ErrorService>().setError(exc);
+
+      return false;
+    });
+
+    print("----------------------");
+    print("STUDENT RECORD UPDATED");
+    print("----------------------");
+
+    return true;
+  }
+
+  Future<bool> setLeaderBoard({String userId, Map<String, dynamic> map}) async {
+    await _firebaseFirestore.collection('leaderboard').doc(userId).set(map).onError((error, stackTrace) {
+      SkeletonException exc =  GeneralException(
+        error.toString(), ExceptionTypes.REQUEST_ERROR,
+      );
+      locator<ErrorService>().setError(exc);
+
+      return false;
+    });
+
+    print("----------------------");
+    print("LEADERBOARD RECORD UPDATED");
+    print("----------------------");
+
+    return true;
+  }
+
+  Future<bool> updateLeaderBoard({String userId, Map<String, dynamic> map}) async {
+    await _firebaseFirestore.collection('leaderboard').doc(userId).update(map).onError((error, stackTrace) {
+      SkeletonException exc =  GeneralException(
+        error.toString(), ExceptionTypes.REQUEST_ERROR,
+      );
+      locator<ErrorService>().setError(exc);
+
+      return false;
+    });
+
+    print("----------------------");
+    print("LEADERBOARD RECORD UPDATED");
+    print("----------------------");
+
+    return true;
+  }
+
   Future<DocumentSnapshot> getStudentDetails({String userId}) async {
 
     DocumentSnapshot doc;

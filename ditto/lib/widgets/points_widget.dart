@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PointsWidget extends StatefulWidget {
@@ -14,26 +16,31 @@ class _PointsWidgetState extends State<PointsWidget> {
         color: Theme.of(context).backgroundColor,
         child: Padding(
           padding: const EdgeInsets.only(right: 30.0, left: 30.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Points :",
-                style: Theme.of(context).primaryTextTheme.button.copyWith(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )
-              ),
-              Text(
-                "0",
-                  style: Theme.of(context).primaryTextTheme.button.copyWith(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  )
-              ),
-            ],
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('student').doc(FirebaseAuth.instance.currentUser.uid).snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              return snapshot.hasData ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Points :",
+                    style: Theme.of(context).primaryTextTheme.button.copyWith(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )
+                  ),
+                  Text(
+                    "${snapshot.data.data()['points']}",
+                      style: Theme.of(context).primaryTextTheme.button.copyWith(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )
+                  ),
+                ],
+              ): Container();
+            }
           ),
         ),
       ),

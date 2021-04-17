@@ -20,16 +20,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="245dd1b1-dbc8-4da3-b8d4-2a939459f5fe" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ditto/lib/bloc/test_bloc.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ditto/lib/screens/test_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ditto/lib/widgets/custom_survey.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ditto/lib/widgets/video_player.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Ditto.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Ditto.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/bloc/home_screen_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/bloc/home_screen_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/bloc/sign_in_sign_up_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/bloc/sign_in_sign_up_bloc.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ditto/lib/ditto_head.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/ditto_head.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/helper/enums.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/helper/enums.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ditto/lib/screens/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/screens/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ditto/lib/screens/login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/screens/login_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ditto/lib/screens/register_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/screens/register_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ditto/test/widget_test.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/screens/settings_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/screens/settings_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/services/firebase_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/services/firebase_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/widgets/leaderboard_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/widgets/leaderboard_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/lib/widgets/points_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/lib/widgets/points_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ditto/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ditto/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,9 +66,18 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ditto" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ditto/lib/widgets" />
     <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Malshan\Desktop\Ditto\ditto\lib\widgets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Malshan\Desktop\Ditto\ditto\lib\widgets" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="main-web" type="FlutterRunConfigurationType" factoryName="Flutter">
@@ -77,6 +108,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614112478221">
@@ -91,9 +123,30 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1614112594352" />
-    <state x="461" y="169" key="SettingsEditor" timestamp="1614112315014">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state width="938" height="281" key="GridCell.Tab.0.bottom" timestamp="1618679535883">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="938" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1618679535883" />
+    <state width="938" height="281" key="GridCell.Tab.0.center" timestamp="1618679535883">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="938" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1618679535883" />
+    <state width="938" height="281" key="GridCell.Tab.0.left" timestamp="1618679535883">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="938" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1618679535883" />
+    <state width="938" height="281" key="GridCell.Tab.0.right" timestamp="1618679535883">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="938" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1618679535883" />
+    <state x="461" y="167" key="SettingsEditor" timestamp="1618660855082">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="167" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1618660855082" />
     <state x="461" y="169" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1614112315014" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1618680598525">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1618680598525" />
   </component>
 </project>

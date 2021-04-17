@@ -17,6 +17,11 @@ enum PersonalityTypes {
   ESTP
 }
 
+enum VideoType{
+  NETWORK,
+  FILE,
+}
+
 enum AppTheme {
   Pink,
   Blue,

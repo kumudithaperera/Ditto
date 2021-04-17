@@ -1,5 +1,8 @@
 import 'package:ditto/helper/appThemeData.dart';
+import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
+import 'package:ditto/widgets/custom_button.dart';
+import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:dropdown_below/dropdown_below.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +70,22 @@ class _SettingScreenState extends State<SettingScreen> {
             Container(
               width: Utils.getDesignWidth(100),
               height: Utils.getDesignHeight(50),
+              child: Text(
+                "Email",
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              width: Utils.getDesignWidth(100),
+              height: Utils.getDesignHeight(50),
+              child: Text(
+                "Name",
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              width: Utils.getDesignWidth(100),
+              height: Utils.getDesignHeight(50),
               margin: EdgeInsets.all(5),
               child: DropdownBelow(
                 itemWidth: 200,
@@ -85,6 +104,30 @@ class _SettingScreenState extends State<SettingScreen> {
                 value: _selectedTest,
                 items: _dropdownTestItems,
                 onChanged: onChangeDropdownTests,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: Utils.getDesignHeight(40),
+                    width: Utils.getDesignWidth(100),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: primaryColorBasic,
+                      ),
+                      onPressed: () { },
+                      child: Text(
+                        "Change Personality",
+                        style: Theme.of(context).primaryTextTheme.button.copyWith(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

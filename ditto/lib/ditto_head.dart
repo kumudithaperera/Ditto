@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:ditto/bloc/home_screen_bloc.dart';
 import 'package:ditto/bloc/loading_bloc.dart';
 import 'package:ditto/bloc/sign_in_sign_up_bloc.dart';
+import 'package:ditto/bloc/test_bloc.dart';
 import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/screens/home_screen.dart';
 import 'package:ditto/screens/login_screen.dart';
 import 'package:ditto/screens/register_screen.dart';
 import 'package:ditto/screens/settings_screen.dart';
+import 'package:ditto/screens/test_screen.dart';
 import 'package:ditto/screens/welcome_screen.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/base_managers/exceptions.dart';
@@ -90,6 +92,11 @@ class _MyAppState extends State<MyApp> {
                   dispose: (_, bloc) => bloc.dispose(),
                 ),
                 '/settings': (context) => SettingScreen(),
+                '/test': (context) => Provider(
+                  create: (context) => TestBloc(),
+                  child: TestScreen(),
+                  dispose: (_, bloc) => bloc.dispose(),
+                ),
               },
             ),
           );

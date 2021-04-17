@@ -41,6 +41,12 @@ class SignInSignUpBloc {
       'name': name,
       'email': email,
       'personality': personality,
+      'points': 0,
+    };
+
+    Map<String, dynamic> _leaderboard = {
+      'name': name,
+      'points': 0,
     };
 
     try{
@@ -48,6 +54,7 @@ class SignInSignUpBloc {
       _eventBus.fire(LoadEvent.show());
       uid = await locator<FirebaseService>().signUp(email, password);
       await locator<FirebaseService>().saveStudentDetails(userId: uid, map: _studentDetails);
+      await locator<FirebaseService>().setLeaderBoard(userId: uid, map: _leaderboard);
       _eventBus.fire(LoadEvent.hide());
 
       if(uid != null){
