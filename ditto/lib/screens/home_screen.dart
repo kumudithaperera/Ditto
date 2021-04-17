@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               height: Utils.totalBodyHeight,
               child: Padding(
