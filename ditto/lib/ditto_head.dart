@@ -7,6 +7,7 @@ import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/screens/home_screen.dart';
 import 'package:ditto/screens/login_screen.dart';
 import 'package:ditto/screens/register_screen.dart';
+import 'package:ditto/screens/settings_screen.dart';
 import 'package:ditto/screens/welcome_screen.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/base_managers/exceptions.dart';
@@ -88,6 +89,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                   dispose: (_, bloc) => bloc.dispose(),
                 ),
+                '/settings': (context) => SettingScreen(),
               },
             ),
           );

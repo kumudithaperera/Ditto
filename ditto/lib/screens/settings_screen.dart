@@ -1,6 +1,8 @@
+import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:dropdown_below/dropdown_below.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -8,10 +10,93 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+  List<Map<String, dynamic>> _personalityTypeList = [
+    {'no': 1, 'keyword': 'INFP'},
+    {'no': 2, 'keyword': 'INTJ'},
+    {'no': 3, 'keyword': 'INFJ'},
+    {'no': 4, 'keyword': 'INTP'},
+    {'no': 5, 'keyword': 'ISFJ'},
+    {'no': 6, 'keyword': 'ISFP'},
+    {'no': 7, 'keyword': 'ISTJ'},
+    {'no': 8, 'keyword': 'ISTP'},
+    {'no': 9, 'keyword': 'ENFP'},
+    {'no': 10, 'keyword': 'ENTJ'},
+    {'no': 11, 'keyword': 'ENTP'},
+    {'no': 12, 'keyword': 'ENFJ'},
+    {'no': 13, 'keyword': 'ESFJ'},
+    {'no': 14, 'keyword': 'ESFP'},
+    {'no': 15, 'keyword': 'ESTJ'},
+    {'no': 16, 'keyword': 'ESTP'}
+  ];
+  List<DropdownMenuItem> _dropdownTestItems;
+  var _selectedTest;
+
+  @override
+  void initState() {
+    _dropdownTestItems = buildDropdownTestItems(_personalityTypeList);
+    super.initState();
+  }
+
+  List<DropdownMenuItem> buildDropdownTestItems(List _testList) {
+    // ignore: deprecated_member_use
+    List<DropdownMenuItem> items = List();
+    for (var i in _testList) {
+      items.add(
+        DropdownMenuItem(
+          value: i,
+          child: Text(i['keyword']),
+        ),
+      );
+    }
+    return items;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(
+        title: Container(
+          child: Text("Settings"),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: Utils.getDesignWidth(100),
+              height: Utils.getDesignHeight(50),
+              margin: EdgeInsets.all(5),
+              child: DropdownBelow(
+                itemWidth: 200,
+                itemTextstyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.pinkAccent),
+                boxTextstyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0XFFbbbbbb)),
+                boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
+                boxHeight: Utils.getDesignHeight(50),
+                boxWidth: Utils.getDesignWidth(100),
+                hint: Text('Choose Your Personality'),
+                value: _selectedTest,
+                items: _dropdownTestItems,
+                onChanged: onChangeDropdownTests,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  onChangeDropdownTests(selectedTest) {
+    setState(() {
+      _selectedTest = selectedTest;
+    });
+    Provider.of<ThemeNotifier>(context, listen: false).themeNotifier('PersonalityTypes.${selectedTest['keyword']}');
   }
 }

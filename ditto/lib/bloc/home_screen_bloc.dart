@@ -7,6 +7,10 @@ class HomeScreenBloc {
 
   final _userService = locator<UserService>();
 
+  void navigateToSettings() {
+    locator<NavigationService>().pushNamed('/settings');
+  }
+
   Future<String> getPersonalityType() async {
     return await _userService.getPersonalityType;
   }

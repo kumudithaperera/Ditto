@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.settings,
               ),
             ),
-            onTap: () {},
+            onTap: () => _homeScreenBloc.navigateToSettings(),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 30.0, left: 30.0),
