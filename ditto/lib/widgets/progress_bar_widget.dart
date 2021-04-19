@@ -18,7 +18,7 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: Card(
-        margin: EdgeInsets.all(10.0),
+        margin: EdgeInsets.all(7.0),
         color: Theme.of(context).backgroundColor,
         child: Container(
           padding: EdgeInsets.all(10.0),

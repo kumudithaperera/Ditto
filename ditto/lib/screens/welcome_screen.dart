@@ -16,7 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Utils.setScreenSizes(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: SecondaryColorBasic,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,3 +1,4 @@
+import 'package:ditto/helper/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +20,7 @@ class CustomTextField extends StatefulWidget {
   final bool currencyFormat;
   final bool obscureText;
   final String Function(String) validator;
-
+  final isConst;
 
   CustomTextField({
     @required this.title,
@@ -37,6 +38,7 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.maxLines = 1,
     this.validator,
+    this.isConst = false,
   });
 
   @override
@@ -158,14 +160,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: _textEditingController,
       keyboardType: widget.keyboardType,
       textCapitalization: widget.textCapitalization,
-      cursorColor: Theme.of(context).primaryColor,
+      cursorColor: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor,
       obscureText: widget.obscureText,
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).backgroundColor, width: 0.5),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          borderSide: BorderSide(color: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor),
         ),
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 0.5),
@@ -177,7 +179,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         contentPadding: widget.maxLines == 1 ? EdgeInsets.only() : EdgeInsets.only(bottom: 8.0),
         labelStyle: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
           fontSize: 16.0,
-          color: Theme.of(context).primaryColor,
+          color: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor,
           fontWeight: FontWeight.w300,
         ),
         prefixText: widget.prefixText,
@@ -189,7 +191,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         suffixStyle: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
           fontSize: 16.0,
           fontWeight: FontWeight.w400,
-          color: Theme.of(context).primaryColor,
+          color: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor,
         ),
         errorText: widget.error,
         errorStyle: Theme.of(context).primaryTextTheme.bodyText1.copyWith(
@@ -199,12 +201,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       style: widget.enabled ? Theme.of(context).primaryTextTheme.bodyText1.copyWith(
         fontSize: 16.0,
-        color: Theme.of(context).primaryColor,
+        color: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor,
         fontWeight: FontWeight.w400,
       ) : Theme.of(context).primaryTextTheme.bodyText1.copyWith(
         fontSize: 16.0,
         fontWeight: FontWeight.w400,
-        color: Theme.of(context).primaryColor,
+        color: widget.isConst ? primaryColorBasic : Theme.of(context).primaryColor,
       ),
       enabled: widget.enabled,
       maxLines: widget.maxLines,

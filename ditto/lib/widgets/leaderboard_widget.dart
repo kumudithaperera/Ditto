@@ -2,6 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class LeaderBoardWidget extends StatefulWidget {
+
+  final bool isIntrovert;
+
+  LeaderBoardWidget({this.isIntrovert});
+
   @override
   _LeaderBoardWidgetState createState() => _LeaderBoardWidgetState();
 }
@@ -10,7 +15,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
       child: Card(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('leaderboard').orderBy('points', descending: true).snapshots(),
@@ -43,7 +48,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                             ),
                           ),
                           Text(
-                            "${snapshot.data.docs[index]['points']} pts",
+                            widget.isIntrovert ? "" : "${snapshot.data.docs[index]['points']} pts",
                             style: Theme.of(context).primaryTextTheme.button.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

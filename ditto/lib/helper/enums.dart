@@ -17,6 +17,11 @@ enum PersonalityTypes {
   ESTP
 }
 
+enum GamificationElementType{
+  I,
+  E,
+}
+
 enum VideoType{
   NETWORK,
   FILE,

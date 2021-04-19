@@ -1,6 +1,7 @@
 import 'package:ditto/bloc/test_bloc.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class TestScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _TestScreenState extends State<TestScreen> {
     super.didChangeDependencies();
 
     _testBloc = Provider.of<TestBloc>(context);
+    _testBloc.getStudentDetails();
   }
 
   @override
@@ -95,13 +97,17 @@ class _TestScreenState extends State<TestScreen> {
                 }
               ),
               Container(
+                margin: EdgeInsets.only(top: 20.0),
                 height: Utils.getDesignHeight(40),
                 width: Utils.getDesignWidth(100),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () => _testBloc.savePoint(),
+                  onPressed: () {
+                    _testBloc.savePoint();
+                    showDialogBox();
+                  },
                   child: Text(
                     "Submit Answers",
                     style: Theme.of(context).primaryTextTheme.button.copyWith(
@@ -151,6 +157,84 @@ class _TestScreenState extends State<TestScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  showDialogBox() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 20.0),
+              child: Text('How motivated are you to continue',
+                style: Theme.of(context).primaryTextTheme.button.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            RatingBar.builder(
+              initialRating: 0,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                switch (index) {
+                  case 0:
+                    return Icon(
+                      Icons.sentiment_very_dissatisfied,
+                      color: Colors.red,
+                    );
+                  case 1:
+                    return Icon(
+                      Icons.sentiment_dissatisfied,
+                      color: Colors.redAccent,
+                    );
+                  case 2:
+                    return Icon(
+                      Icons.sentiment_neutral,
+                      color: Colors.amber,
+                    );
+                  case 3:
+                    return Icon(
+                      Icons.sentiment_satisfied,
+                      color: Colors.lightGreen,
+                    );
+                  case 4:
+                    return Icon(
+                      Icons.sentiment_very_satisfied,
+                      color: Colors.green,
+                    );
+                  default:
+                    return Icon(
+                      Icons.sentiment_very_satisfied,
+                      color: Colors.green,
+                    );
+                }
+              },
+              onRatingUpdate: (rating) => _testBloc.ratingSink.add(rating.toInt()),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30.0),
+              height: Utils.getDesignHeight(40),
+              width: Utils.getDesignWidth(100),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
+                onPressed: () => _testBloc.updaterRate(),
+                child: Text(
+                  "Rate the Lecture",
+                  style: Theme.of(context).primaryTextTheme.button.copyWith(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

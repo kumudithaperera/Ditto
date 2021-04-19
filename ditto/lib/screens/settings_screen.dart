@@ -1,6 +1,8 @@
+import 'package:ditto/bloc/settings_screen_bloc.dart';
 import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
+import 'package:ditto/helper/validation.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:dropdown_below/dropdown_below.dart';
@@ -13,6 +15,10 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+  SettingsScreenBloc _settingsScreenBloc;
+
+  String email;
 
   List<Map<String, dynamic>> _personalityTypeList = [
     {'no': 1, 'keyword': 'INFP'},
@@ -41,6 +47,13 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settingsScreenBloc = Provider.of<SettingsScreenBloc>(context);
+    _settingsScreenBloc.getStudentDetails();
+  }
+
   List<DropdownMenuItem> buildDropdownTestItems(List _testList) {
     // ignore: deprecated_member_use
     List<DropdownMenuItem> items = List();
@@ -64,73 +77,94 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: Utils.getDesignWidth(100),
-              height: Utils.getDesignHeight(50),
-              child: Text(
-                "Email",
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Container(
-              width: Utils.getDesignWidth(100),
-              height: Utils.getDesignHeight(50),
-              child: Text(
-                "Name",
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Container(
-              width: Utils.getDesignWidth(100),
-              height: Utils.getDesignHeight(50),
-              margin: EdgeInsets.all(5),
-              child: DropdownBelow(
-                itemWidth: 200,
-                itemTextstyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.pinkAccent),
-                boxTextstyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0XFFbbbbbb)),
-                boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
-                boxHeight: Utils.getDesignHeight(50),
-                boxWidth: Utils.getDesignWidth(100),
-                hint: Text('Choose Your Personality'),
-                value: _selectedTest,
-                items: _dropdownTestItems,
-                onChanged: onChangeDropdownTests,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: Utils.getDesignHeight(40),
-                    width: Utils.getDesignWidth(100),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: primaryColorBasic,
-                      ),
-                      onPressed: () { },
-                      child: Text(
-                        "Change Personality",
-                        style: Theme.of(context).primaryTextTheme.button.copyWith(
-                          fontSize: 15,
-                        ),
-                      ),
+        child: StreamBuilder(
+          stream: _settingsScreenBloc.userDetailsStream,
+          builder: (context, AsyncSnapshot<UserDetailsModel> snapshot) {
+            return snapshot.hasData ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: Utils.getDesignWidth(100),
+                  height: Utils.getDesignHeight(50),
+                  child: Text(
+                    "${snapshot.data.name}",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).primaryTextTheme.button.copyWith(
+                     fontWeight: FontWeight.bold,
+                     color: Colors.black,
+                     fontSize: 15,
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+                Container(
+                  width: Utils.getDesignWidth(100),
+                  height: Utils.getDesignHeight(50),
+                  margin: EdgeInsets.all(5),
+                  child: CustomTextField(
+                    title: "Email",
+                    initialValue: snapshot.data.email,
+                    onChange: (email) => this.email = email,
+                    validator: (text){
+                      if(text.length == 0){
+                        return "Please fill this field";
+                      }
+                      if(!Validation.isValidEmail(text)){
+                        return "Please enter a valid email";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
+                  width: Utils.getDesignWidth(100),
+                  height: Utils.getDesignHeight(50),
+                  margin: EdgeInsets.all(5),
+                  child: DropdownBelow(
+                    itemWidth: 200,
+                    itemTextstyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.pinkAccent),
+                    boxTextstyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0XFFbbbbbb)),
+                    boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
+                    boxHeight: Utils.getDesignHeight(50),
+                    boxWidth: Utils.getDesignWidth(100),
+                    hint: Text('${snapshot.data.personalityType}'),
+                    value: _selectedTest,
+                    items: _dropdownTestItems,
+                    onChanged: onChangeDropdownTests,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: Utils.getDesignHeight(40),
+                        width: Utils.getDesignWidth(100),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).primaryColor,
+                          ),
+                          onPressed: () { },
+                          child: Text(
+                            "Save Details",
+                            style: Theme.of(context).primaryTextTheme.button.copyWith(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ) : Container();
+          }
         ),
       ),
     );

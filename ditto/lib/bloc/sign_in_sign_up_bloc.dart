@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ditto/helper/appThemeData.dart';
+import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/firebase_service.dart';
@@ -13,7 +13,14 @@ class SignInSignUpBloc {
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
 
-  void loginUser({String email, String password}) async{
+  String _uid;
+  String _personalityType = "";
+
+  void navigateToHomeScreen(){
+    locator<NavigationService>().pushReplacement('/home');
+  }
+
+  Future<bool> loginUser({String email, String password}) async{
 
     try{
 
@@ -21,17 +28,13 @@ class SignInSignUpBloc {
       String uid = await locator<FirebaseService>().signIn(email, password);
       _eventBus.fire(LoadEvent.hide());
 
-      if(uid != null){
-        // Get Student details to determine the personality color
-        getStudentDetails();
-        locator<NavigationService>().pushReplacement('/home');
-      }
-
       _userService.saveUserId(uid);
       print("User Id: $uid");
 
+      return true;
     }catch(error){
       print(error.toString());
+      return false;
     }
   }
 
@@ -42,6 +45,9 @@ class SignInSignUpBloc {
       'email': email,
       'personality': personality,
       'points': 0,
+      'lec_rate': [],
+      'test_rate': [],
+      'isCompleted': false,
     };
 
     Map<String, dynamic> _leaderboard = {
@@ -58,8 +64,6 @@ class SignInSignUpBloc {
       _eventBus.fire(LoadEvent.hide());
 
       if(uid != null){
-        // Get Student details to determine the personality color
-        getStudentDetails();
         locator<NavigationService>().pushReplacement('/home');
       }
 
@@ -72,7 +76,7 @@ class SignInSignUpBloc {
     }
   }
 
-  void getStudentDetails() async {
+  Future<bool> getStudentDetails() async {
 
     String _uuid = await _userService.getUserId;
 
@@ -81,7 +85,24 @@ class SignInSignUpBloc {
       _eventBus.fire(LoadEvent.hide());
     });
 
+    print(doc.data()['personality']);
+    _personalityType = 'PersonalityTypes.${doc.data()['personality']}';
+    print(_personalityType);
+
     // _themeNotifier.themeNotifier('PersonalityTypes.${doc.data()['personality']}');
     _userService.savePersonalityType('PersonalityTypes.${doc.data()['personality']}');
+
+    return true;
+  }
+
+  String get getUid => _uid;
+
+  String get getPersonalityType => _personalityType;
+
+  void logout(){
+    _userService.clear().whenComplete(() {
+      locator<FirebaseService>().signOut();
+    });
+    locator<NavigationService>().pushReplacement('/');
   }
 }

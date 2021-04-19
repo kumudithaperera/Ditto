@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ditto/bloc/home_screen_bloc.dart';
 import 'package:ditto/bloc/loading_bloc.dart';
+import 'package:ditto/bloc/settings_screen_bloc.dart';
 import 'package:ditto/bloc/sign_in_sign_up_bloc.dart';
 import 'package:ditto/bloc/test_bloc.dart';
 import 'package:ditto/helper/appThemeData.dart';
@@ -84,15 +85,19 @@ class _MyAppState extends State<MyApp> {
                 '/': (context) => WelcomeScreen(),
                 '/login': (context) => LoginScreen(),
                 '/register': (context) => RegisterScreen(logoPath: model.logoPath,),
-                '/home': (context) => Provider(
+                '/home': (context) => Provider<HomeScreenBloc>(
                   create: (context) => HomeScreenBloc(),
                   child: HomeScreen(
                     logoPath: model.logoPath,
                   ),
                   dispose: (_, bloc) => bloc.dispose(),
                 ),
-                '/settings': (context) => SettingScreen(),
-                '/test': (context) => Provider(
+                '/settings': (context) => Provider<SettingsScreenBloc>(
+                  create: (context) => SettingsScreenBloc(),
+                  child: SettingScreen(),
+                  dispose: (_, bloc) => bloc.dispose(),
+                ),
+                '/test': (context) => Provider<TestBloc>(
                   create: (context) => TestBloc(),
                   child: TestScreen(),
                   dispose: (_, bloc) => bloc.dispose(),

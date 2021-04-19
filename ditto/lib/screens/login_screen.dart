@@ -1,7 +1,10 @@
 import 'package:ditto/bloc/sign_in_sign_up_bloc.dart';
+import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/helper/validation.dart';
+import 'package:ditto/service_locator.dart';
+import 'package:ditto/services/navigation_service.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: SecondaryColorBasic,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -62,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: EdgeInsets.all(5),
                         child: CustomTextField(
                           title: "Email",
+                          isConst: true,
                           onChange: (email) => this.email = email,
                           validator: (text){
                             if(text.length == 0){
@@ -80,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: EdgeInsets.all(5),
                         child: CustomTextField(
                           title: "Password",
+                          isConst: true,
                           obscureText: true,
                           onChange: (password) => this.password = password,
                           validator: (text){
@@ -98,14 +103,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: ElevatedButton.styleFrom(
                             primary: primaryColorBasic
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if(_key.currentState.validate()){
                               _key.currentState.save();
                               FocusScope.of(context).unfocus();
-                              _signInSignUpBloc.loginUser(
+                              await _signInSignUpBloc.loginUser(
                                 email: this.email,
                                 password: this.password,
-                              );
+                              ).then((isSuccess) async{
+                                if(isSuccess) {
+                                  await _signInSignUpBloc.getStudentDetails().then((value) {
+                                    if(value){
+                                      Provider.of<ThemeNotifier>(context, listen: false).themeNotifier(_signInSignUpBloc.getPersonalityType);
+                                      _signInSignUpBloc.navigateToHomeScreen();
+                                    }
+                                  });
+                                }
+                              });
                             }
                           },
                           child: Text(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/firebase_service.dart';
@@ -10,6 +11,8 @@ class TestBloc {
 
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
+
+  List<dynamic> _rating = [];
 
   BehaviorSubject<int> _questionOneSubject = BehaviorSubject<int>();
   Stream<int> get questionOneStream => _questionOneSubject.stream;
@@ -30,6 +33,10 @@ class TestBloc {
   BehaviorSubject<int> _questionFiveSubject = BehaviorSubject<int>();
   Stream<int> get questionFiveStream => _questionFiveSubject.stream;
   Sink<int> get questionFiveSink => _questionFiveSubject.sink;
+
+  BehaviorSubject<int> _ratingSubject = BehaviorSubject<int>();
+  Stream<int> get ratingStream => _ratingSubject.stream;
+  Sink<int> get ratingSink => _ratingSubject.sink;
 
   void savePoint() async {
 
@@ -58,7 +65,37 @@ class TestBloc {
     await locator<FirebaseService>().updateLeaderBoard(userId: _uuid, map: {'points': points});
     _eventBus.fire(LoadEvent.hide());
 
-    locator<NavigationService>().pushReplacement('/home');
+    // locator<NavigationService>().pushReplacement('/home');
+  }
+
+  void saveFeedback() async {
+  }
+
+  void updaterRate() async {
+
+    String _uuid = await _userService.getUserId;
+
+    _rating.add(_ratingSubject.value);
+
+    _eventBus.fire(LoadEvent.show());
+    await locator<FirebaseService>().saveRate(userId: _uuid, map: {'test_rate': _rating});
+    await locator<FirebaseService>().saveAchievement(userId: _uuid, map: {'isCompleted': true});
+    _eventBus.fire(LoadEvent.hide());
+
+    locator<NavigationService>().pop();
+    locator<NavigationService>().pushNamed('/home');
+  }
+
+  void getStudentDetails() async {
+
+    String _uuid = await _userService.getUserId;
+
+    _eventBus.fire(LoadEvent.show());
+    DocumentSnapshot doc = await locator<FirebaseService>().getStudentDetails(userId: _uuid).whenComplete(() {
+      _eventBus.fire(LoadEvent.hide());
+    });
+
+    _rating = doc.data()['test_rate'].toList();
   }
 
   void dispose(){
@@ -67,5 +104,6 @@ class TestBloc {
     _questionThreeSubject.close();
     _questionFourSubject.close();
     _questionFiveSubject.close();
+    _ratingSubject.close();
   }
 }
