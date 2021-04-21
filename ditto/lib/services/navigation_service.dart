@@ -23,13 +23,14 @@ class NavigationService {
     return _navigatorKey.currentState.pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false, arguments: args);
   }
 
-  void showError(ExceptionTypes type, String error) {
+  void showError(ExceptionTypes type, String error, bool isSuccess) {
     final context = _navigatorKey.currentState.overlay.context;
     final DisplayError handler = DisplayImpl();
     handler.showError(
       context,
       errorType: type.name,
       message: error,
+      isSuccess: isSuccess
     );
   }
 

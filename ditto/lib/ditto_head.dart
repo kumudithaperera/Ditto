@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
   void listenToErrors(){
     _errorSubscription = _prevErrorStream.listen((error){
-      locator<NavigationService>().showError(error.type, error.message);
+      locator<NavigationService>().showError(error.type, error.message, error.isSuccess);
     });
   }
 

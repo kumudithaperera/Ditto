@@ -5,7 +5,7 @@ import '../../enums.dart';
 
 class GeneralException implements SkeletonException {
 
-  GeneralException(this.message, this.type);
+  GeneralException(this.message, this.type, {this.isSuccess = false});
 
   @override
   String message;
@@ -17,4 +17,7 @@ class GeneralException implements SkeletonException {
   String toString() => this.message;
 
   FirebaseAuthException firebaseAuthException;
+
+  @override
+  bool isSuccess;
 }

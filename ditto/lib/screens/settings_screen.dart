@@ -1,9 +1,7 @@
 import 'package:ditto/bloc/settings_screen_bloc.dart';
 import 'package:ditto/helper/appThemeData.dart';
-import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/helper/validation.dart';
-import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:dropdown_below/dropdown_below.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +13,8 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+  final GlobalKey<FormState> _key = GlobalKey();
 
   SettingsScreenBloc _settingsScreenBloc;
 
@@ -69,6 +69,12 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   @override
+  void dispose() {
+    _key.currentState?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -80,89 +86,101 @@ class _SettingScreenState extends State<SettingScreen> {
         child: StreamBuilder(
           stream: _settingsScreenBloc.userDetailsStream,
           builder: (context, AsyncSnapshot<UserDetailsModel> snapshot) {
-            return snapshot.hasData ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: Utils.getDesignWidth(100),
-                  height: Utils.getDesignHeight(50),
-                  child: Text(
-                    "${snapshot.data.name}",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).primaryTextTheme.button.copyWith(
-                     fontWeight: FontWeight.bold,
-                     color: Colors.black,
-                     fontSize: 15,
+            return snapshot.hasData ? Form(
+              key: _key,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: Utils.getDesignWidth(100),
+                    height: Utils.getDesignHeight(50),
+                    child: Text(
+                      "${snapshot.data.name}",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).primaryTextTheme.button.copyWith(
+                       fontWeight: FontWeight.bold,
+                       color: Colors.black,
+                       fontSize: 15,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  width: Utils.getDesignWidth(100),
-                  height: Utils.getDesignHeight(50),
-                  margin: EdgeInsets.all(5),
-                  child: CustomTextField(
-                    title: "Email",
-                    initialValue: snapshot.data.email,
-                    onChange: (email) => this.email = email,
-                    validator: (text){
-                      if(text.length == 0){
-                        return "Please fill this field";
-                      }
-                      if(!Validation.isValidEmail(text)){
-                        return "Please enter a valid email";
-                      }
-                      return null;
-                    },
+                  Container(
+                    width: Utils.getDesignWidth(100),
+                    height: Utils.getDesignHeight(50),
+                    margin: EdgeInsets.all(5),
+                    child: CustomTextField(
+                      title: "Email",
+                      initialValue: snapshot.data.email,
+                      onChange: (email) => this.email = email,
+                      validator: (text){
+                        if(text.length == 0){
+                          return "Please fill this field";
+                        }
+                        if(!Validation.isValidEmail(text)){
+                          return "Please enter a valid email";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                ),
-                Container(
-                  width: Utils.getDesignWidth(100),
-                  height: Utils.getDesignHeight(50),
-                  margin: EdgeInsets.all(5),
-                  child: DropdownBelow(
-                    itemWidth: 200,
-                    itemTextstyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.pinkAccent),
-                    boxTextstyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0XFFbbbbbb)),
-                    boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
-                    boxHeight: Utils.getDesignHeight(50),
-                    boxWidth: Utils.getDesignWidth(100),
-                    hint: Text('${snapshot.data.personalityType}'),
-                    value: _selectedTest,
-                    items: _dropdownTestItems,
-                    onChanged: onChangeDropdownTests,
+                  Container(
+                    width: Utils.getDesignWidth(100),
+                    height: Utils.getDesignHeight(50),
+                    margin: EdgeInsets.all(5),
+                    child: DropdownBelow(
+                      itemWidth: 200,
+                      itemTextstyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.pinkAccent),
+                      boxTextstyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0XFFbbbbbb)),
+                      boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
+                      boxHeight: Utils.getDesignHeight(50),
+                      boxWidth: Utils.getDesignWidth(100),
+                      hint: Text('${snapshot.data.personalityType}'),
+                      value: _selectedTest,
+                      items: _dropdownTestItems,
+                      onChanged: onChangeDropdownTests,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: Utils.getDesignHeight(40),
-                        width: Utils.getDesignWidth(100),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                          ),
-                          onPressed: () { },
-                          child: Text(
-                            "Save Details",
-                            style: Theme.of(context).primaryTextTheme.button.copyWith(
-                              fontSize: 15,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: Utils.getDesignHeight(40),
+                          width: Utils.getDesignWidth(100),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).primaryColor,
+                            ),
+                            onPressed: () {
+                              if(_key.currentState.validate()){
+                                _key.currentState.save();
+                                FocusScope.of(context).unfocus();
+                                _settingsScreenBloc.updateEmail(
+                                  newEmail: email,
+                                  personality: _selectedTest != null ? _selectedTest['keyword'] : snapshot.data.personalityType,
+                                );
+                              }
+                            },
+                            child: Text(
+                              "Save Details",
+                              style: Theme.of(context).primaryTextTheme.button.copyWith(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ) : Container();
           }
         ),

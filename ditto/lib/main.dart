@@ -4,6 +4,5 @@ import 'package:flutter/material.dart';
 
 void main() {
   setupLocator();
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }

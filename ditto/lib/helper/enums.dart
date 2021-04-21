@@ -36,6 +36,7 @@ enum AppTheme {
 }
 
 enum ExceptionTypes {
+  SUCCESS,
   TIMEOUT_EXCEPTION,
   SOCKET_EXCEPTION,
   REQUEST_ERROR,
@@ -46,6 +47,8 @@ enum ExceptionTypes {
 extension ExceptionExtension on ExceptionTypes {
   String get name {
     switch (this) {
+      case ExceptionTypes.SUCCESS:
+        return 'Success';
       case ExceptionTypes.TIMEOUT_EXCEPTION:
         return 'Timeout Exception';
       case ExceptionTypes.SOCKET_EXCEPTION:

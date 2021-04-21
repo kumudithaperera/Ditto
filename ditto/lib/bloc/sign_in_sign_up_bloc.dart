@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/firebase_service.dart';
 import 'package:ditto/services/navigation_service.dart';
 import 'package:ditto/services/user_service.dart';
 import 'package:event_bus/event_bus.dart';
-import 'package:flutter/material.dart';
 
 class SignInSignUpBloc {
 
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
 
-  String _uid;
   String _personalityType = "";
+  String _uuid;
 
   void navigateToHomeScreen(){
     locator<NavigationService>().pushReplacement('/home');
@@ -22,13 +20,16 @@ class SignInSignUpBloc {
 
   Future<bool> loginUser({String email, String password}) async{
 
+    String uid;
+
     try{
 
       _eventBus.fire(LoadEvent.show());
-      String uid = await locator<FirebaseService>().signIn(email, password);
+      uid = await locator<FirebaseService>().signIn(email, password);
       _eventBus.fire(LoadEvent.hide());
-
       _userService.saveUserId(uid);
+      _userService.saveUserEmail(email);
+      _userService.saveUserPassword(password);
       print("User Id: $uid");
 
       return true;
@@ -67,6 +68,8 @@ class SignInSignUpBloc {
         locator<NavigationService>().pushReplacement('/home');
       }
 
+      _userService.saveUserEmail(email);
+      _userService.saveUserPassword(password);
       _userService.saveUserId(uid);
       print("User Id: $uid");
 
@@ -78,24 +81,21 @@ class SignInSignUpBloc {
 
   Future<bool> getStudentDetails() async {
 
-    String _uuid = await _userService.getUserId;
+    _uuid = await _userService.getUserId;
 
     _eventBus.fire(LoadEvent.show());
-    DocumentSnapshot doc = await locator<FirebaseService>().getStudentDetails(userId: _uuid).whenComplete(() {
-      _eventBus.fire(LoadEvent.hide());
-    });
+    DocumentSnapshot doc = await locator<FirebaseService>().getStudentDetails(userId: _uuid);
+    _eventBus.fire(LoadEvent.hide());
 
-    print(doc.data()['personality']);
-    _personalityType = 'PersonalityTypes.${doc.data()['personality']}';
-    print(_personalityType);
+    if(doc.data() != null){
+      _personalityType = 'PersonalityTypes.${doc.data()['personality']}';
+      _userService.savePersonalityType('PersonalityTypes.${doc.data()['personality']}');
 
-    // _themeNotifier.themeNotifier('PersonalityTypes.${doc.data()['personality']}');
-    _userService.savePersonalityType('PersonalityTypes.${doc.data()['personality']}');
+      locator<NavigationService>().pushReplacement('/home');
+    }
 
     return true;
   }
-
-  String get getUid => _uid;
 
   String get getPersonalityType => _personalityType;
 

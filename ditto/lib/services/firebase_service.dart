@@ -28,6 +28,25 @@ class FirebaseService {
     return user.uid;
   }
 
+  Future<String> changeEmail({String oldEmail, String newEmail, String password}) async {
+
+    UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: oldEmail, password: password).onError((error, stackTrace) {
+      SkeletonException exc =  GeneralException(
+        error.toString().split("] ").last, ExceptionTypes.REQUEST_ERROR,
+      );
+      locator<ErrorService>().setError(exc);
+
+      return null;
+    });
+
+    result.user.updateEmail(newEmail);
+
+    User user = result.user;
+
+    print(user.uid);
+    return user.uid;
+  }
+
   Future<String> signUp(String email, String password) async {
 
     UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password).onError((error, stackTrace) {
@@ -41,6 +60,23 @@ class FirebaseService {
 
     User user = result.user;
     return user.uid;
+  }
+
+  Future<bool> updateStudentEmail({String userId, Map<String, dynamic> map}) async {
+    await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
+      SkeletonException exc =  GeneralException(
+        error.toString(), ExceptionTypes.REQUEST_ERROR,
+      );
+      locator<ErrorService>().setError(exc);
+
+      return false;
+    });
+
+    print("----------------------");
+    print("STUDENT RECORD UPDATED");
+    print("----------------------");
+
+    return true;
   }
 
   Future<bool> saveStudentDetails({String userId, Map<String, dynamic> map}) async {

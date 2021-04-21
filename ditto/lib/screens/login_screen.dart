@@ -3,8 +3,6 @@ import 'package:ditto/helper/appThemeData.dart';
 import 'package:ditto/helper/colors.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/helper/validation.dart';
-import 'package:ditto/service_locator.dart';
-import 'package:ditto/services/navigation_service.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.didChangeDependencies();
 
     _signInSignUpBloc = Provider.of<SignInSignUpBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _key.currentState?.dispose();
+    super.dispose();
   }
 
   @override
@@ -115,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   await _signInSignUpBloc.getStudentDetails().then((value) {
                                     if(value){
                                       Provider.of<ThemeNotifier>(context, listen: false).themeNotifier(_signInSignUpBloc.getPersonalityType);
-                                      _signInSignUpBloc.navigateToHomeScreen();
                                     }
                                   });
                                 }

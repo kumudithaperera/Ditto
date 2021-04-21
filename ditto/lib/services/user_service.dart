@@ -11,6 +11,12 @@ class UserService extends UserManager{
   }
 
   @override
+  Future<String> get getUserPassword async {
+    final instance = await SharedPreferences.getInstance();
+    return instance.getString('password');
+  }
+
+  @override
   Future<String> get getPersonalityType async {
     final instance = await SharedPreferences.getInstance();
     return instance.getString('personalityType');
@@ -29,6 +35,12 @@ class UserService extends UserManager{
   }
 
   @override
+  void saveUserPassword(String password) async {
+    final instance = await SharedPreferences.getInstance();
+    instance.setString('password', password);
+  }
+
+  @override
   void savePersonalityType(String personalityType) async {
     final instance = await SharedPreferences.getInstance();
     instance.setString('personalityType', personalityType);
@@ -38,5 +50,17 @@ class UserService extends UserManager{
   Future<bool> clear() async {
     final instance = await SharedPreferences.getInstance();
     return instance.clear();
+  }
+
+  @override
+  Future<String> get getUserEmail async {
+    final instance = await SharedPreferences.getInstance();
+    return instance.getString('email');
+  }
+
+  @override
+  void saveUserEmail(String email) async {
+    final instance = await SharedPreferences.getInstance();
+    instance.setString('email', email);
   }
 }

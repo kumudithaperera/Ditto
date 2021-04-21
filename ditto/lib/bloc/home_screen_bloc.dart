@@ -13,7 +13,7 @@ class HomeScreenBloc {
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
 
-  String _id;
+  String _uid;
   List<dynamic> _rating = [];
 
   PublishSubject<bool> _playPauseVideo = PublishSubject<bool>();
@@ -50,11 +50,11 @@ class HomeScreenBloc {
     });
 
     _rating = doc.data()['lec_rate'].toList();
-    _id = _uuid;
+    _uid = _uuid;
 
     isDoneSink.add(doc.data()['isCompleted']);
 
-    await getPersonalityType(type: doc.data()['personality']);
+    getPersonalityType(type: doc.data()['personality']);
   }
 
   void getPersonalityType({String type}) {
@@ -79,7 +79,7 @@ class HomeScreenBloc {
     locator<NavigationService>().pop();
   }
 
-  String get getUuid => _id;
+  String get getUuid => _uid;
 
   void dispose(){
     _playPauseVideo.close();
