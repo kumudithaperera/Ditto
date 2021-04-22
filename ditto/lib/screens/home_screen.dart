@@ -86,76 +86,78 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Expanded(
                 flex: 3,
-                child: Container(
-                  height: Utils.totalBodyHeight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:30.0, left: 40.0, right: 30.0, bottom:30.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top:20.0, left: 20.0, right: 20.0),
-                              height:Utils.getDesignHeight(600),
-                              width: double.infinity,
-                              child: VideoPlayerWidget(
-                                videoPath: "https://firebasestorage.googleapis.com/v0/b/ditto-ac673.appspot.com/o/OOPSVideo.mp4?alt=media&token=5f516ffb-8f81-468a-99b9-b2c7fe5aed26",
-                                videoType: VideoType.NETWORK,
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: Utils.totalBodyHeight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:30.0, left: 40.0, right: 30.0, bottom:30.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top:20.0, left: 20.0, right: 20.0),
+                                height:Utils.getDesignHeight(600),
+                                width: double.infinity,
+                                child: VideoPlayerWidget(
+                                  videoPath: "https://firebasestorage.googleapis.com/v0/b/ditto-ac673.appspot.com/o/OOPSVideo.mp4?alt=media&token=5f516ffb-8f81-468a-99b9-b2c7fe5aed26",
+                                  videoType: VideoType.NETWORK,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "OOP Concepts",
-                                      style: Theme.of(context).primaryTextTheme.button.copyWith(
-                                        fontSize: 25,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        height: Utils.getDesignHeight(50),
-                                        width: Utils.getDesignWidth(60),
-                                        child: CustomButton(
-                                          name: 'Rate this Lecture',
-                                          borderColor: Theme.of(context).primaryColor,
-                                          onTap: () => showDialogBox(),
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        "OOP Concepts",
+                                        style: Theme.of(context).primaryTextTheme.button.copyWith(
+                                          fontSize: 25,
+                                          color: Colors.black,
                                         ),
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20.0),
-                                        height: Utils.getDesignHeight(50),
-                                        width: Utils.getDesignWidth(60),
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Theme.of(context).primaryColor,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          height: Utils.getDesignHeight(50),
+                                          width: Utils.getDesignWidth(60),
+                                          child: CustomButton(
+                                            name: 'Rate this Lecture',
+                                            borderColor: Theme.of(context).primaryColor,
+                                            onTap: () => showDialogBox(),
                                           ),
-                                          onPressed: () => _homeScreenBloc.navigateToTest(),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 20.0),
+                                          height: Utils.getDesignHeight(50),
+                                          width: Utils.getDesignWidth(60),
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Theme.of(context).primaryColor,
+                                            ),
+                                            onPressed: () => _homeScreenBloc.navigateToTest(),
 
-                                          child: Text(
-                                            "Proceed To The Test",
-                                            style: Theme.of(context).primaryTextTheme.button.copyWith(
-                                              fontSize: 15,
+                                            child: Text(
+                                              "Proceed To The Test",
+                                              style: Theme.of(context).primaryTextTheme.button.copyWith(
+                                                fontSize: 15,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
