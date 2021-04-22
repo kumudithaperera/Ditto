@@ -237,7 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
                                         ),
-                                        child: AchievementWidget(),
+                                        child: AchievementWidget(
+                                          title: "Test 01 Passed",
+                                          imagePath: "assets/images/achivement.svg",
+                                        ),
                                       ),
                                     ),
                                   ),

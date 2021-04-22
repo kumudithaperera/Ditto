@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class LeaderBoardWidget extends StatefulWidget {
 
   final bool isIntrovert;
+  final String orderBy;
+  final String lastKey;
 
-  LeaderBoardWidget({this.isIntrovert});
+  LeaderBoardWidget({this.isIntrovert, this.orderBy = 'points', this.lastKey = 'points'});
 
   @override
   _LeaderBoardWidgetState createState() => _LeaderBoardWidgetState();
@@ -18,7 +20,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
       child: Card(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy('points', descending: true).snapshots(),
+          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy(widget.orderBy, descending: true).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,
@@ -47,8 +49,15 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            widget.isIntrovert ? "" : "${snapshot.data.docs[index]['points']} pts",
+                          widget.lastKey.contains('points') ? Text(
+                            widget.isIntrovert ? "" : "${snapshot.data.docs[index][widget.lastKey]} pts",
+                            style: Theme.of(context).primaryTextTheme.button.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ) : Text(
+                            "${snapshot.data.docs[index][widget.lastKey]} mins",
                             style: Theme.of(context).primaryTextTheme.button.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

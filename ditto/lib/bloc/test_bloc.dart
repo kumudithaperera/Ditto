@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
 import 'package:ditto/services/firebase_service.dart';
@@ -38,11 +39,25 @@ class TestBloc {
   Stream<int> get ratingStream => _ratingSubject.stream;
   Sink<int> get ratingSink => _ratingSubject.sink;
 
-  void savePoint() async {
+  BehaviorSubject<GamificationElementType> _elementTypeSubject = BehaviorSubject<GamificationElementType>();
+  Stream<GamificationElementType> get elementTypeStream => _elementTypeSubject.stream;
+  Sink<GamificationElementType> get elementTypeSink => _elementTypeSubject.sink;
+
+  BehaviorSubject<bool> _timeBadgeSubject = BehaviorSubject<bool>();
+  Stream<bool> get timeBadgeStream => _timeBadgeSubject.stream;
+  Sink<bool> get timeBadgeSink => _timeBadgeSubject.sink;
+
+  BehaviorSubject<bool> _marksBadgeSubject = BehaviorSubject<bool>();
+  Stream<bool> get marksBadgeStream => _marksBadgeSubject.stream;
+  Sink<bool> get marksBadgeSink => _marksBadgeSubject.sink;
+
+  void savePoint(int time) async {
 
     String _uuid = await _userService.getUserId;
 
     int points = 0;
+    bool marksBadge = false;
+    bool timeBadge = false;
 
     if(_questionOneSubject.stream.value == 2){
       points += 10;
@@ -60,15 +75,30 @@ class TestBloc {
       points += 10;
     }
 
+    if(points >= 40){
+      marksBadge = true;
+    }
+
+    if(time <= 480){
+      timeBadge = true;
+    }
+
+    print((time / 60).toStringAsFixed(2));
+
     _eventBus.fire(LoadEvent.show());
-    await locator<FirebaseService>().saveTestScore(userId: _uuid, map: {'points': points});
-    await locator<FirebaseService>().updateLeaderBoard(userId: _uuid, map: {'points': points});
+    await locator<FirebaseService>().saveTestScore(userId: _uuid, map: {
+      'points': points,
+      'marks_badge': marksBadge,
+      'time_badge': timeBadge,
+    });
+    await locator<FirebaseService>().updateLeaderBoard(userId: _uuid, map:
+    {
+      'points': points,
+      'time': (time / 60).toStringAsFixed(2),
+    });
     _eventBus.fire(LoadEvent.hide());
 
     // locator<NavigationService>().pushReplacement('/home');
-  }
-
-  void saveFeedback() async {
   }
 
   void updaterRate() async {
@@ -95,7 +125,21 @@ class TestBloc {
       _eventBus.fire(LoadEvent.hide());
     });
 
+    marksBadgeSink.add(doc.data()['marks_badge']);
+    timeBadgeSink.add(doc.data()['time_badge']);
+
     _rating = doc.data()['test_rate'].toList();
+
+    getPersonalityType(type: doc.data()['personality']);
+  }
+
+  void getPersonalityType({String type}) {
+
+    if(type[0] == "I"){
+      elementTypeSink.add(GamificationElementType.I);
+    }else{
+      elementTypeSink.add(GamificationElementType.E);
+    }
   }
 
   void dispose(){
@@ -105,5 +149,8 @@ class TestBloc {
     _questionFourSubject.close();
     _questionFiveSubject.close();
     _ratingSubject.close();
+    _elementTypeSubject.close();
+    _timeBadgeSubject.close();
+    _marksBadgeSubject.close();
   }
 }

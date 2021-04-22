@@ -5,6 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AchievementWidget extends StatefulWidget {
+
+  final String imagePath;
+  final String title;
+
+  AchievementWidget({this.imagePath, this.title});
+
   @override
   _AchievementWidgetState createState() => _AchievementWidgetState();
 }
@@ -22,16 +28,16 @@ class _AchievementWidgetState extends State<AchievementWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Flexible(
-                child: SvgPicture.asset("assets/images/achivement.svg",
+                child: SvgPicture.asset(widget.imagePath,
                   width: Utils.getDesignWidth(70),
                   height: Utils.getDesignHeight(70),
                 ),
               ),
               Flexible(
                 child: Text(
-                    "Test 1 Passed",
+                    widget.title,
                     style: Theme.of(context).primaryTextTheme.button.copyWith(
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     )
