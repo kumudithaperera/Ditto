@@ -1,9 +1,12 @@
 import 'package:ditto/bloc/test_bloc.dart';
+import 'package:ditto/helper/app_data.dart';
 import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/util.dart';
 import 'package:ditto/widgets/achivement_widget.dart';
 import 'package:ditto/widgets/count_down.dart';
 import 'package:ditto/widgets/leaderboard_widget.dart';
+import 'package:ditto/widgets/time_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +18,9 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateMixin {
 
-  TestBloc _testBloc;
+  final _appData = AppData.getInstance;
 
+  TestBloc _testBloc;
   AnimationController _controller;
 
   @override
@@ -184,10 +188,31 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
               child: SingleChildScrollView(
                 child: StreamBuilder(
                   stream: _testBloc.elementTypeStream,
-                  builder: (context, AsyncSnapshot<GamificationElementType> snapshot) {
-                    return Column(
+                  builder: (context, snapshot) {
+                    return snapshot.hasData ? Column(
                       children: [
-                        Container(
+                        _appData.time ? Container(
+                          margin: EdgeInsets.only(top: 30.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: Utils.getDesignHeight(100),
+                                  child: Card(
+                                    color: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    child: TimeWidget(FirebaseAuth.instance.currentUser.uid),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) : Container(),
+                        _appData.timeLeaderboard ? Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -202,7 +227,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                                       BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: LeaderBoardWidget(
-                                      isIntrovert: snapshot.data == GamificationElementType.E ? false : true,
+                                      isIntrovert: _appData.time ? true : false,
                                       lastKey: 'time',
                                       orderBy: 'time',
                                     ),
@@ -211,67 +236,73 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                               ),
                             ],
                           ),
-                        ),
-                        snapshot.data == GamificationElementType.E ? Container() : StreamBuilder<bool>(
-                          stream: _testBloc.marksBadgeStream,
-                          builder: (context, snapshot) {
-                            return snapshot.hasData && snapshot.data ? Container(
-                              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: Utils.getDesignHeight(100),
-                                      child: Card(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                        ),
-                                        child: AchievementWidget(
-                                          title: "Above 40 marks",
-                                          imagePath: "assets/images/achivement.svg",
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ): Container();
-                          }
-                        ),
-                        snapshot.data == GamificationElementType.E ? Container() : StreamBuilder<bool>(
-                          stream: _testBloc.timeBadgeStream,
-                          builder: (context, snapshot) {
-                            return snapshot.hasData && snapshot.data ? Container(
-                              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: Utils.getDesignHeight(100),
-                                      child: Card(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                        ),
-                                        child: AchievementWidget(
-                                          title: "Finished Test Before 08 mins",
-                                          imagePath: "assets/images/achivement.svg",
+                        ) : Container(),
+                        _appData.timeLeaderboard ? StreamBuilder<bool>(
+                            initialData: false,
+                            stream: _testBloc.marksBadgeStream,
+                            builder: (context, snapshot) {
+                              return Container(
+                                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Utils.getDesignHeight(100),
+                                        child: Card(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: AchievementWidget(
+                                            title: "Above 40 marks",
+                                            imagePath: "assets/images/morePointsBadge.svg",
+                                            isDone: snapshot.data,
+                                            lock: "assets/images/lock.svg",
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ): Container();
-                          }
-                        ),
+                                  ],
+                                ),
+                              );
+                            }
+                        ) : Container(),
+                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                            initialData: false,
+                            stream: _testBloc.timeBadgeStream,
+                            builder: (context, snapshot) {
+                              return Container(
+                                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Utils.getDesignHeight(100),
+                                        child: Card(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: AchievementWidget(
+                                            title: "Finished Test Before 08 mins",
+                                            imagePath: "assets/images/TimeAchievementBadge.svg",
+                                            isDone: snapshot.data,
+                                            lock: "assets/images/lock.svg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                        ): Container(),
                       ],
-                    );
+                    ): Container();
                   }
                 ),
               ),

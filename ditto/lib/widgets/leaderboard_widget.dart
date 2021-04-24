@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LeaderBoardWidget extends StatefulWidget {
@@ -20,13 +21,13 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
       child: Card(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy(widget.orderBy, descending: true).snapshots(),
+          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy(widget.orderBy, descending: false).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,
                 itemBuilder: (BuildContext context, index){
                   return Card(
-                    color: Theme.of(context).backgroundColor,
+                    color: snapshot.data.docs[index].data()['uid'] == FirebaseAuth.instance.currentUser.uid ? Colors.amber : Theme.of(context).backgroundColor,
                     margin: EdgeInsets.all(10.0),
                     child: Container(
                       margin: EdgeInsets.all(20.0),

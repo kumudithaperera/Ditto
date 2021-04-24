@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ditto/bloc/home_screen_bloc.dart';
+import 'package:ditto/bloc/settings_screen_bloc.dart';
 import 'package:ditto/bloc/sign_in_sign_up_bloc.dart';
-import 'package:ditto/helper/appThemeData.dart';
-import 'package:ditto/helper/colors.dart';
+import 'package:ditto/helper/app_data.dart';
 import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/util.dart';
+import 'package:ditto/screens/settings_screen.dart';
 import 'package:ditto/widgets/achivement_widget.dart';
 import 'package:ditto/widgets/custom_button.dart';
 import 'package:ditto/widgets/leaderboard_widget.dart';
 import 'package:ditto/widgets/points_widget.dart';
 import 'package:ditto/widgets/progress_bar_widget.dart';
 import 'package:ditto/widgets/video_player.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,8 +29,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  final _appData = AppData.getInstance;
+
   HomeScreenBloc _homeScreenBloc;
   SignInSignUpBloc _signInSignUpBloc;
+  SettingsScreenBloc _settingsScreenBloc;
 
   @override
   void didChangeDependencies() {
@@ -38,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _homeScreenBloc = Provider.of<HomeScreenBloc>(context);
     _signInSignUpBloc = Provider.of<SignInSignUpBloc>(context);
+    _settingsScreenBloc = Provider.of<SettingsScreenBloc>(context);
     _homeScreenBloc.getStudentDetails();
+    _settingsScreenBloc.getStudentDetails();
   }
 
   @override
@@ -64,7 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.settings,
               ),
             ),
-            onTap: () => _homeScreenBloc.navigateToSettings(),
+            onTap: () {
+              Navigator.of(context).pushNamed('/settings')
+                  .then((val){
+                    _settingsScreenBloc.getStudentDetails();
+              });
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(right: 30.0, left: 30.0),
@@ -79,8 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder(
-        stream: _homeScreenBloc.elementTypeStream,
-        builder: (context, AsyncSnapshot<GamificationElementType> snapshot) {
+        initialData: false,
+        stream: _settingsScreenBloc.userDetailsStream,
+        builder: (context, snapshot) {
           return snapshot.hasData ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -142,7 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               primary: Theme.of(context).primaryColor,
                                             ),
                                             onPressed: () => _homeScreenBloc.navigateToTest(),
-
                                             child: Text(
                                               "Proceed To The Test",
                                               style: Theme.of(context).primaryTextTheme.button.copyWith(
@@ -172,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        snapshot.data == GamificationElementType.E ? Container(
+                        _appData.points ? Container(
                           margin: EdgeInsets.only(top: 30.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -184,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Theme.of(context).primaryColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                      BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: PointsWidget(_homeScreenBloc.getUuid),
                                   ),
@@ -195,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ): Container(
                           margin: EdgeInsets.only(top: 30.0),
                         ),
-                        Container(
+                        _appData.pointsLeaderboard ? Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -210,63 +220,64 @@ class _HomeScreenState extends State<HomeScreen> {
                                       BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: LeaderBoardWidget(
-                                      isIntrovert: snapshot.data == GamificationElementType.E ? false : true,
+                                      isIntrovert: _appData.points ? true : false,
                                     ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        snapshot.data == GamificationElementType.E ? Container() : StreamBuilder<bool>(
-                          stream: _homeScreenBloc.isDoneStream,
-                          initialData: false,
-                          builder: (context, snapshotVal) {
-                            print(snapshotVal.data);
-                            return snapshotVal.data ? Container(
-                              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: Utils.getDesignHeight(100),
-                                      child: Card(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                        ),
-                                        child: AchievementWidget(
-                                          title: "Test 01 Passed",
-                                          imagePath: "assets/images/achivement.svg",
+                        ) : Container(),
+                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                            stream: _homeScreenBloc.isDoneStream,
+                            initialData: false,
+                            builder: (context, snapshotVal) {
+                              return Container(
+                                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Utils.getDesignHeight(100),
+                                        child: Card(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: AchievementWidget(
+                                            title: "Test 01 Passed",
+                                            imagePath: "assets/images/achivement.svg",
+                                            isDone: snapshotVal.data,
+                                            lock: "assets/images/lock.svg",
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ): Container();
-                          }
-                        ),
-                        snapshot.data == GamificationElementType.E ? Container() : SingleChildScrollView(
+                                  ],
+                                ),
+                              );
+                            }
+                        ): Container(),
+                        _appData.progressBar ? SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
                               StreamBuilder(
-                                stream: FirebaseFirestore.instance.collection('student').doc(_homeScreenBloc.getUuid).snapshots(),
-                                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                                  return snapshot.hasData ? Card(
-                                    color: Theme.of(context).primaryColor,
-                                    margin: EdgeInsets.all(10.0),
-                                    child: ProgressBarWidget(
-                                      percentage: (snapshot.data.data()['points'] * 2) / 100,
-                                      progressColor: Colors.red,
-                                      testName: "Lecture 1 Test Progress",
-                                    ),
+                                  stream: FirebaseFirestore.instance.collection('student').doc(_homeScreenBloc.getUuid).snapshots(),
+                                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                    return snapshot.hasData ? Card(
+                                      color: Theme.of(context).primaryColor,
+                                      margin: EdgeInsets.all(10.0),
+                                      child: ProgressBarWidget(
+                                        percentage: (snapshot.data.data()['points'] * 2) / 100,
+                                        progressColor: Colors.red,
+                                        testName: "Lecture 1 Test Progress",
+                                      ),
 
-                                  ): Container();
-                                }
+                                    ): Container();
+                                  }
                               ),
                               Card(
                                 color: Theme.of(context).primaryColor,
@@ -288,14 +299,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                        ),
+                        ): Container(),
                       ],
                     ),
                   ),
                 ),
               ),
             ],
-          ) : Container();
+          ): Container();
         }
       ),
     );

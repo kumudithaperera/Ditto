@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ditto/helper/app_data.dart';
 import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
@@ -9,6 +10,8 @@ import 'package:event_bus/event_bus.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeScreenBloc {
+
+  final _appData = AppData.getInstance;
 
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
@@ -51,6 +54,13 @@ class HomeScreenBloc {
 
     _rating = doc.data()['lec_rate'].toList();
     _uid = _uuid;
+
+    _appData.achievementsBadges = doc.data()['elements']['achievements'];
+    _appData.points = doc.data()['elements']['points'];
+    _appData.pointsLeaderboard = doc.data()['elements']['pointsL'];
+    _appData.timeLeaderboard = doc.data()['elements']['timeL'];
+    _appData.progressBar = doc.data()['elements']['progress_bar'];
+    _appData.time = doc.data()['elements']['time'];
 
     isDoneSink.add(doc.data()['isCompleted']);
 

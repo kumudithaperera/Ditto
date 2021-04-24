@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class PointsWidget extends StatefulWidget {
+class TimeWidget extends StatefulWidget {
 
   final String uid;
 
-  PointsWidget(this.uid);
+  TimeWidget(this.uid);
 
   @override
-  _PointsWidgetState createState() => _PointsWidgetState();
+  _TimeWidgetState createState() => _TimeWidgetState();
 }
 
-class _PointsWidgetState extends State<PointsWidget> {
+class _TimeWidgetState extends State<TimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +28,7 @@ class _PointsWidgetState extends State<PointsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "Points :",
+                    "Time :",
                     style: Theme.of(context).primaryTextTheme.button.copyWith(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ class _PointsWidgetState extends State<PointsWidget> {
                     )
                   ),
                   Text(
-                    "${snapshot.data.data()['points']}",
+                    "${snapshot.data.data()['time']} mins",
                       style: Theme.of(context).primaryTextTheme.button.copyWith(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,

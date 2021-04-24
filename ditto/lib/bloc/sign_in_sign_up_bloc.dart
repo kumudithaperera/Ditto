@@ -46,14 +46,13 @@ class SignInSignUpBloc {
       'email': email,
       'personality': personality,
       'points': 0,
+      'time': "0.0",
       'lec_rate': [],
       'test_rate': [],
       'isCompleted': false,
-    };
-
-    Map<String, dynamic> _leaderboard = {
-      'name': name,
-      'points': 0,
+      'time_badge': false,
+      'marks_badge': false,
+      'elements': _gameElements(personality[0]),
     };
 
     try{
@@ -61,7 +60,11 @@ class SignInSignUpBloc {
       _eventBus.fire(LoadEvent.show());
       uid = await locator<FirebaseService>().signUp(email, password);
       await locator<FirebaseService>().saveStudentDetails(userId: uid, map: _studentDetails);
-      await locator<FirebaseService>().setLeaderBoard(userId: uid, map: _leaderboard);
+      await locator<FirebaseService>().setLeaderBoard(userId: uid, map: {
+        'uid': uid,
+        'name': name,
+        'points': 0,
+      });
       _eventBus.fire(LoadEvent.hide());
 
       if(uid != null){
@@ -104,5 +107,38 @@ class SignInSignUpBloc {
       locator<FirebaseService>().signOut();
     });
     locator<NavigationService>().pushReplacement('/');
+  }
+
+  Map<String, bool> _gameElements(String personality){
+
+    if(personality == "I"){
+      return {
+        'achievements': true,
+        'points': false,
+        'pointsL': false,
+        'progress_bar': true,
+        'timeL': true,
+        'time': true,
+      };
+    }
+    if(personality == "E"){
+      return {
+        'achievements': false,
+        'points': true,
+        'pointsL': true,
+        'progress_bar': false,
+        'timeL': true,
+        'time': true,
+      };
+    }
+
+    return {
+      'achievements': false,
+      'points': false,
+      'pointsL': false,
+      'progress_bar': false,
+      'timeL': false,
+      'time': false,
+    };
   }
 }

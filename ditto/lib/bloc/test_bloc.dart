@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ditto/helper/app_data.dart';
 import 'package:ditto/helper/enums.dart';
 import 'package:ditto/helper/load_events.dart';
 import 'package:ditto/service_locator.dart';
@@ -10,8 +11,12 @@ import 'package:rxdart/rxdart.dart';
 
 class TestBloc {
 
+  final _appData = AppData.getInstance;
+
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
+
+  String _uid;
 
   List<dynamic> _rating = [];
 
@@ -90,6 +95,7 @@ class TestBloc {
       'points': points,
       'marks_badge': marksBadge,
       'time_badge': timeBadge,
+      'time': (time / 60).toStringAsFixed(2),
     });
     await locator<FirebaseService>().updateLeaderBoard(userId: _uuid, map:
     {
@@ -119,6 +125,7 @@ class TestBloc {
   void getStudentDetails() async {
 
     String _uuid = await _userService.getUserId;
+    _uid = await _userService.getUserId;
 
     _eventBus.fire(LoadEvent.show());
     DocumentSnapshot doc = await locator<FirebaseService>().getStudentDetails(userId: _uuid).whenComplete(() {
@@ -127,6 +134,13 @@ class TestBloc {
 
     marksBadgeSink.add(doc.data()['marks_badge']);
     timeBadgeSink.add(doc.data()['time_badge']);
+
+    _appData.achievementsBadges = doc.data()['elements']['achievements'];
+    _appData.points = doc.data()['elements']['points'];
+    _appData.pointsLeaderboard = doc.data()['elements']['pointsL'];
+    _appData.timeLeaderboard = doc.data()['elements']['timeL'];
+    _appData.progressBar = doc.data()['elements']['progress_bar'];
+    _appData.time = doc.data()['elements']['time'];
 
     _rating = doc.data()['test_rate'].toList();
 
@@ -141,6 +155,8 @@ class TestBloc {
       elementTypeSink.add(GamificationElementType.E);
     }
   }
+
+  String get getUuid => _uid;
 
   void dispose(){
     _questionOneSubject.close();

@@ -146,6 +146,72 @@ class _SettingScreenState extends State<SettingScreen> {
                       onChanged: onChangeDropdownTests,
                     ),
                   ),
+                  StreamBuilder(
+                  initialData: false,
+                  stream: _settingsScreenBloc.pointsLeaderboardStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Points Leaderboard",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.pointsLeaderboardSink.add,
+                      );
+                    }
+                  ),
+                  StreamBuilder(
+                    initialData: false,
+                    stream: _settingsScreenBloc.timeLeaderboardStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Time Leaderboard",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.timeLeaderboardSink.add,
+                      );
+                    }
+                  ),
+                  StreamBuilder(
+                    initialData: false,
+                    stream: _settingsScreenBloc.achievementAndBadgesStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Achievements and Badges",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.achievementAndBadgesSink.add,
+                      );
+                    }
+                  ),
+                  StreamBuilder(
+                    initialData: false,
+                    stream: _settingsScreenBloc.progressBarStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Progress Bar",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.progressBarSink.add,
+                      );
+                    }
+                  ),
+                  StreamBuilder(
+                    initialData: false,
+                    stream: _settingsScreenBloc.pointsStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Points",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.pointsSink.add,
+                      );
+                    }
+                  ),
+                  StreamBuilder(
+                    initialData: false,
+                    stream: _settingsScreenBloc.timeStream,
+                    builder: (context, snapshot) {
+                      return _gameElementsSwitch(
+                        text: "Time",
+                        value: snapshot.data,
+                        onChanged: _settingsScreenBloc.timeSink.add,
+                      );
+                    }
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Row(
@@ -165,6 +231,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 _settingsScreenBloc.updateEmail(
                                   newEmail: email,
                                   personality: _selectedTest != null ? _selectedTest['keyword'] : snapshot.data.personalityType,
+                                  isOld: _selectedTest == null ? true : _selectedTest['keyword'][0] == snapshot.data.personalityType[0]
                                 );
                               }
                             },
@@ -184,6 +251,25 @@ class _SettingScreenState extends State<SettingScreen> {
             ) : Container();
           }
         ),
+      ),
+    );
+  }
+
+  Widget _gameElementsSwitch({String text, bool value, Function(bool) onChanged}){
+    return Container(
+      width: Utils.getDesignWidth(100),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+          ),
+          Switch(
+            activeColor: Theme.of(context).primaryColor,
+            value: value,
+            onChanged: onChanged,
+          ),
+        ],
       ),
     );
   }

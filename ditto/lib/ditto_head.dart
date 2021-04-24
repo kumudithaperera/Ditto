@@ -30,6 +30,9 @@ class _MyAppState extends State<MyApp> {
 
   final ErrorService errorHandler = locator<ErrorService>();
 
+  HomeScreenBloc _homeScreenBloc;
+  SettingsScreenBloc _settingsScreenBloc;
+
   StreamSubscription _errorSubscription;
   Stream<SkeletonException> _prevErrorStream;
 
@@ -85,15 +88,32 @@ class _MyAppState extends State<MyApp> {
                 '/': (context) => WelcomeScreen(),
                 '/login': (context) => LoginScreen(),
                 '/register': (context) => RegisterScreen(logoPath: model.logoPath,),
-                '/home': (context) => Provider<HomeScreenBloc>(
-                  create: (context) => HomeScreenBloc(),
+                '/home': (context) => MultiProvider(
+                  providers: [
+                    Provider<HomeScreenBloc>(
+                      create: (context) {
+                        _homeScreenBloc = HomeScreenBloc();
+                        return _homeScreenBloc;
+                      },
+                      dispose: (_, bloc) => bloc.dispose(),
+                    ),
+                    Provider<SettingsScreenBloc>(
+                      create: (context) {
+                        _settingsScreenBloc = SettingsScreenBloc();
+                        return _settingsScreenBloc;
+                      },
+                      dispose: (_, bloc) => bloc.dispose(),
+                    ),
+                  ],
                   child: HomeScreen(
                     logoPath: model.logoPath,
                   ),
-                  dispose: (_, bloc) => bloc.dispose(),
                 ),
                 '/settings': (context) => Provider<SettingsScreenBloc>(
-                  create: (context) => SettingsScreenBloc(),
+                  create: (context) {
+                    _settingsScreenBloc = SettingsScreenBloc();
+                    return _settingsScreenBloc;
+                  },
                   child: SettingScreen(),
                   dispose: (_, bloc) => bloc.dispose(),
                 ),
