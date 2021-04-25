@@ -259,6 +259,72 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             }
                         ): Container(),
+                        _appData.timeLeaderboard ? StreamBuilder<bool>(
+                            initialData: false,
+                            stream: _homeScreenBloc.marksBadgeStream,
+                            builder: (context, snapshot) {
+                              return snapshot.data ? Container(
+                                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Utils.getDesignHeight(100),
+                                        child: Card(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: AchievementWidget(
+                                            title: "Above 40 marks",
+                                            imagePath: "assets/images/morePointsBadge.svg",
+                                            isDone: snapshot.data,
+                                            lock: "assets/images/lock.svg",
+                                            width: 45,
+                                            height: 45,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ): Container();
+                            }
+                        ) : Container(),
+                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                            initialData: false,
+                            stream: _homeScreenBloc.timeBadgeStream,
+                            builder: (context, snapshot) {
+                              return snapshot.data ? Container(
+                                margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: Utils.getDesignHeight(100),
+                                        child: Card(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: AchievementWidget(
+                                            title: "Finished Test Before 01 mins",
+                                            imagePath: "assets/images/TimeAchievementBadge.svg",
+                                            isDone: snapshot.data,
+                                            lock: "assets/images/lock.svg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ): Container();
+                            }
+                        ): Container(),
                         _appData.progressBar ? SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(

@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Container(
-                        width: Utils.getDesignWidth(50),
+                        width: Utils.getDesignWidth(100),
                         height: Utils.getDesignHeight(30),
                         margin: EdgeInsets.all(5),
                         child: ElevatedButton(
