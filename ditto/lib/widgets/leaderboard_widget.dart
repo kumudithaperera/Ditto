@@ -52,7 +52,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                             ),
                           ),
                           widget.lastKey.contains('points') ? Text(
-                            widget.isIntrovert ? "" : "${snapshot.data.docs[index][widget.lastKey]} pts",
+                            widget.isIntrovert ? "${snapshot.data.docs[index][widget.lastKey]} pts" : "",
                             style: Theme.of(context).primaryTextTheme.button.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
