@@ -7,8 +7,9 @@ class LeaderBoardWidget extends StatefulWidget {
   final bool isIntrovert;
   final String orderBy;
   final String lastKey;
+  final bool descending;
 
-  LeaderBoardWidget({this.isIntrovert, this.orderBy = 'points', this.lastKey = 'points'});
+  LeaderBoardWidget({this.isIntrovert, this.orderBy = 'points', this.lastKey = 'points', this.descending = true});
 
   @override
   _LeaderBoardWidgetState createState() => _LeaderBoardWidgetState();
@@ -21,7 +22,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
       child: Card(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy(widget.orderBy, descending: false).snapshots(),
+          stream: FirebaseFirestore.instance.collection('leaderboard').orderBy(widget.orderBy, descending: widget.descending).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,

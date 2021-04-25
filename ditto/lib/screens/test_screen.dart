@@ -230,6 +230,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                                       isIntrovert: _appData.time ? true : false,
                                       lastKey: 'time',
                                       orderBy: 'time',
+                                      descending: false,
                                     ),
                                   ),
                                 ),

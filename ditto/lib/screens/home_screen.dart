@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder(
-        initialData: false,
         stream: _settingsScreenBloc.userDetailsStream,
         builder: (context, snapshot) {
           return snapshot.hasData ? Row(
