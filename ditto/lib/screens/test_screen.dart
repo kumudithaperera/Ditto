@@ -261,6 +261,8 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                                             imagePath: "assets/images/morePointsBadge.svg",
                                             isDone: snapshot.data,
                                             lock: "assets/images/lock.svg",
+                                            width: 45,
+                                            height: 45,
                                           ),
                                         ),
                                       ),

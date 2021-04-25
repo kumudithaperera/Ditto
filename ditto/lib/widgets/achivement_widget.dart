@@ -10,8 +10,10 @@ class AchievementWidget extends StatefulWidget {
   final String lock;
   final String title;
   final bool isDone;
+  final int height;
+  final int width;
 
-  AchievementWidget({this.imagePath, this.title, this.lock, this.isDone});
+  AchievementWidget({this.imagePath, this.title, this.lock, this.isDone, this.height = 70, this.width = 70});
 
   @override
   _AchievementWidgetState createState() => _AchievementWidgetState();
@@ -35,8 +37,8 @@ class _AchievementWidgetState extends State<AchievementWidget> {
                 children: <Widget>[
                   Flexible(
                     child: SvgPicture.asset(widget.imagePath,
-                      width: Utils.getDesignWidth(70),
-                      height: Utils.getDesignHeight(70),
+                      width: Utils.getDesignWidth(widget.width),
+                      height: Utils.getDesignHeight(widget.height),
                     ),
                   ),
                   Flexible(
