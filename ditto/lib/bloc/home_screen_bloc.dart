@@ -27,6 +27,14 @@ class HomeScreenBloc {
   Stream<bool> get isDoneStream => _isDoneSubject.stream;
   Sink<bool> get isDoneSink => _isDoneSubject.sink;
 
+  BehaviorSubject<bool> _timeBadgeSubject = BehaviorSubject<bool>();
+  Stream<bool> get timeBadgeStream => _timeBadgeSubject.stream;
+  Sink<bool> get timeBadgeSink => _timeBadgeSubject.sink;
+
+  BehaviorSubject<bool> _marksBadgeSubject = BehaviorSubject<bool>();
+  Stream<bool> get marksBadgeStream => _marksBadgeSubject.stream;
+  Sink<bool> get marksBadgeSink => _marksBadgeSubject.sink;
+
   BehaviorSubject<int> _ratingSubject = BehaviorSubject<int>();
   Stream<int> get ratingStream => _ratingSubject.stream;
   Sink<int> get ratingSink => _ratingSubject.sink;
@@ -63,6 +71,8 @@ class HomeScreenBloc {
     _appData.time = doc.data()['elements']['time'];
 
     isDoneSink.add(doc.data()['isCompleted']);
+    marksBadgeSink.add(doc.data()['marks_badge']);
+    timeBadgeSink.add(doc.data()['time_badge']);
 
     getPersonalityType(type: doc.data()['personality']);
   }
@@ -96,5 +106,7 @@ class HomeScreenBloc {
     _elementTypeSubject.close();
     _ratingSubject.close();
     _isDoneSubject.close();
+    _timeBadgeSubject.close();
+    _marksBadgeSubject.close();
   }
 }

@@ -25,7 +25,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _controller = AnimationController(duration: const Duration(minutes: 10), vsync: this);
+    _controller = AnimationController(duration: const Duration(minutes: 5), vsync: this);
     super.initState();
   }
 
@@ -66,11 +66,9 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
           Expanded(
             flex: 3,
             child: SingleChildScrollView(
-              child: Container(
-                width: Utils.getDesignHeight(800),
+              child: Padding(
+                padding: EdgeInsets.only(left: Utils.getDesignWidth(20)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: Utils.getDesignHeight(30.0)),
@@ -86,72 +84,82 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                           ),
                           CountDown(
                             animation: StepTween(
-                              begin: 10 * 60,
+                              begin: 5 * 60,
                               end: 0,
                             ).animate(_controller),
                           ),
                         ],
                       ),
                     ),
-                    StreamBuilder<int>(
-                        stream: _testBloc.questionOneStream,
-                        builder: (context, snapshot) {
-                          return _questionAndAnswer(
-                            question: '1. What is Inheritance?',
-                            answerOne: 'nothing but assigning behavior or value in a subclass to something that was already declared in the main class',
-                            answerTwo: 'concept where one class shares the structure and behavior defined in another class.*',
-                            answerVal: snapshot.data,
-                            sink: _testBloc.questionOneSink,
-                          );
-                        }
+                    Center(
+                      child: StreamBuilder<int>(
+                          stream: _testBloc.questionOneStream,
+                          builder: (context, snapshot) {
+                            return _questionAndAnswer(
+                              question: '1. What is Inheritance?',
+                              answerOne: 'nothing but assigning behavior or value in a subclass to something that was already declared in the main class',
+                              answerTwo: 'concept where one class shares the structure and behavior defined in another class.*',
+                              answerVal: snapshot.data,
+                              sink: _testBloc.questionOneSink,
+                            );
+                          }
+                      ),
                     ),
-                    StreamBuilder<int>(
-                        stream: _testBloc.questionTwoStream,
-                        builder: (context, snapshot) {
-                          return _questionAndAnswer(
-                            question: '2. What is an abstract class?',
-                            answerOne: 'class which cannot be instantiated*',
-                            answerTwo: ' an instance of a class',
-                            answerVal: snapshot.data,
-                            sink: _testBloc.questionTwoSink,
-                          );
-                        }
+                    Center(
+                      child: StreamBuilder<int>(
+                          stream: _testBloc.questionTwoStream,
+                          builder: (context, snapshot) {
+                            return _questionAndAnswer(
+                              question: '2. What is an abstract class?',
+                              answerOne: 'class which cannot be instantiated*',
+                              answerTwo: ' an instance of a class',
+                              answerVal: snapshot.data,
+                              sink: _testBloc.questionTwoSink,
+                            );
+                          }
+                      ),
                     ),
-                    StreamBuilder<int>(
-                        stream: _testBloc.questionThreeStream,
-                        builder: (context, snapshot) {
-                          return _questionAndAnswer(
-                            question: '3. What is abstraction?',
-                            answerOne: 'shows only the necessary details to the client of an object.*',
-                            answerTwo: 'simply a representation of a type of object.',
-                            answerVal: snapshot.data,
-                            sink: _testBloc.questionThreeSink,
-                          );
-                        }
+                    Center(
+                      child: StreamBuilder<int>(
+                          stream: _testBloc.questionThreeStream,
+                          builder: (context, snapshot) {
+                            return _questionAndAnswer(
+                              question: '3. What is abstraction?',
+                              answerOne: 'shows only the necessary details to the client of an object.*',
+                              answerTwo: 'simply a representation of a type of object.',
+                              answerVal: snapshot.data,
+                              sink: _testBloc.questionThreeSink,
+                            );
+                          }
+                      ),
                     ),
-                    StreamBuilder<int>(
-                        stream: _testBloc.questionFourStream,
-                        builder: (context, snapshot) {
-                          return _questionAndAnswer(
-                            question: '4. What is Polymorphism?',
-                            answerOne: 'concept where one class shares the structure and behavior defined in another class.',
-                            answerTwo: ' nothing but assigning behavior or value in a subclass to something that was already declared in the main class.*',
-                            answerVal: snapshot.data,
-                            sink: _testBloc.questionFourSink,
-                          );
-                        }
+                    Center(
+                      child: StreamBuilder<int>(
+                          stream: _testBloc.questionFourStream,
+                          builder: (context, snapshot) {
+                            return _questionAndAnswer(
+                              question: '4. What is Polymorphism?',
+                              answerOne: 'concept where one class shares the structure and behavior defined in another class.',
+                              answerTwo: ' nothing but assigning behavior or value in a subclass to something that was already declared in the main class.*',
+                              answerVal: snapshot.data,
+                              sink: _testBloc.questionFourSink,
+                            );
+                          }
+                      ),
                     ),
-                    StreamBuilder<int>(
-                        stream: _testBloc.questionFiveStream,
-                        builder: (context, snapshot) {
-                          return _questionAndAnswer(
-                            question: '5. What is an interface?',
-                            answerOne: 'collection of an abstract method.*',
-                            answerTwo: 'it shows only the necessary details to the client of an object.',
-                            answerVal: snapshot.data,
-                            sink: _testBloc.questionFiveSink,
-                          );
-                        }
+                    Center(
+                      child: StreamBuilder<int>(
+                          stream: _testBloc.questionFiveStream,
+                          builder: (context, snapshot) {
+                            return _questionAndAnswer(
+                              question: '5. What is an interface?',
+                              answerOne: 'collection of an abstract method.*',
+                              answerTwo: 'it shows only the necessary details to the client of an object.',
+                              answerVal: snapshot.data,
+                              sink: _testBloc.questionFiveSink,
+                            );
+                          }
+                      ),
                     ),
                     Center(
                       child: Container(
@@ -190,6 +198,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                   stream: _testBloc.elementTypeStream,
                   builder: (context, snapshot) {
                     return snapshot.hasData ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _appData.time ? Container(
                           margin: EdgeInsets.only(top: 30.0),
@@ -238,6 +247,17 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                             ],
                           ),
                         ) : Container(),
+                        _appData.achievementsBadges ? Padding(
+                          padding: EdgeInsets.only(left: Utils.getDesignWidth(1.0)),
+                          child: Text(
+                              "Achievements & Badges",
+                              style: Theme.of(context).primaryTextTheme.button.copyWith(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              )
+                          ),
+                        ): Container(),
                         _appData.timeLeaderboard ? StreamBuilder<bool>(
                             initialData: false,
                             stream: _testBloc.marksBadgeStream,
@@ -291,7 +311,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                                             BorderRadius.all(Radius.circular(10)),
                                           ),
                                           child: AchievementWidget(
-                                            title: "Finished Test Before 08 mins",
+                                            title: "Finished Test Before 01 mins",
                                             imagePath: "assets/images/TimeAchievementBadge.svg",
                                             isDone: snapshot.data,
                                             lock: "assets/images/lock.svg",

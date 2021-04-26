@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        width: Utils.getDesignWidth(50),
+        width: Utils.getDesignWidth(100),
         height: Utils.getDesignHeight(30),
         decoration: BoxDecoration(
             border: Border.all(
