@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
               routes: {
                 '/': (context) => WelcomeScreen(),
                 '/login': (context) => LoginScreen(),
-                '/register': (context) => RegisterScreen(logoPath: model.logoPath,),
+                '/register': (context) => RegisterScreen(logoPath: model.logoPath, imagePath: model.imagePath,),
                 '/home': (context) => MultiProvider(
                   providers: [
                     Provider<HomeScreenBloc>(
