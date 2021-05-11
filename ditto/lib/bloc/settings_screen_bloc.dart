@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 class SettingsScreenBloc {
 
-  final _appData = AppData.getInstance;
+  final _contentVariables = ContentVariables.getInstance;
 
   final _userService = locator<UserService>();
   final _eventBus = locator<EventBus>();
@@ -60,12 +60,12 @@ class SettingsScreenBloc {
     progressBarSink.add(doc.data()['elements']['progress_bar']);
     timeSink.add(doc.data()['elements']['time']);
 
-    _appData.achievementsBadges = doc.data()['elements']['achievements'];
-    _appData.points = doc.data()['elements']['points'];
-    _appData.pointsLeaderboard = doc.data()['elements']['pointsL'];
-    _appData.timeLeaderboard = doc.data()['elements']['timeL'];
-    _appData.progressBar = doc.data()['elements']['progress_bar'];
-    _appData.time = doc.data()['elements']['time'];
+    _contentVariables.achievementsBadges = doc.data()['elements']['achievements'];
+    _contentVariables.points = doc.data()['elements']['points'];
+    _contentVariables.pointsLeaderboard = doc.data()['elements']['pointsL'];
+    _contentVariables.timeLeaderboard = doc.data()['elements']['timeL'];
+    _contentVariables.progressBar = doc.data()['elements']['progress_bar'];
+    _contentVariables.time = doc.data()['elements']['time'];
 
     userDetailsSink.add(UserDetailsModel(doc.data()));
   }
@@ -84,6 +84,8 @@ class SettingsScreenBloc {
         await locator<FirebaseService>().changeEmail(newEmail: newEmail, oldEmail: email, password: password);
       }
 
+      // If the user changes the personalityType, all the game elements will be set to default values of the selected type.
+      // If not only the game elements will be changed.
       await locator<FirebaseService>().updateStudentEmail(userId: uid, map: {
         'email': newEmail != null ? newEmail : email,
         'personality': personality,

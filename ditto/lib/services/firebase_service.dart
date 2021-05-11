@@ -8,13 +8,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../helper/enums.dart';
 
 class FirebaseService {
+
+  // Initialize Firebase instances
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   Future<String> signIn(String email, String password) async {
 
     UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString().split("] ").last, ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -24,14 +26,13 @@ class FirebaseService {
 
     User user = result.user;
 
-    print(user.uid);
     return user.uid;
   }
 
   Future<String> changeEmail({String oldEmail, String newEmail, String password}) async {
 
     UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: oldEmail, password: password).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString().split("] ").last, ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -42,15 +43,13 @@ class FirebaseService {
     result.user.updateEmail(newEmail);
 
     User user = result.user;
-
-    print(user.uid);
     return user.uid;
   }
 
   Future<String> signUp(String email, String password) async {
 
     UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString().split("] ").last, ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -64,7 +63,7 @@ class FirebaseService {
 
   Future<bool> updateStudentEmail({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -81,7 +80,7 @@ class FirebaseService {
 
   Future<bool> saveStudentDetails({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('student').doc(userId).set(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -98,7 +97,7 @@ class FirebaseService {
 
   Future<bool> saveTestScore({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -115,7 +114,7 @@ class FirebaseService {
 
   Future<bool> setLeaderBoard({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('leaderboard').doc(userId).set(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -132,7 +131,7 @@ class FirebaseService {
 
   Future<bool> updateLeaderBoard({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('leaderboard').doc(userId).update(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -149,7 +148,7 @@ class FirebaseService {
 
   Future<bool> saveRate({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -166,7 +165,7 @@ class FirebaseService {
 
   Future<bool> saveAchievement({String userId, Map<String, dynamic> map}) async {
     await _firebaseFirestore.collection('student').doc(userId).update(map).onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);
@@ -186,7 +185,7 @@ class FirebaseService {
     DocumentSnapshot doc;
 
     doc = await _firebaseFirestore.collection('student').doc(userId).get().onError((error, stackTrace) {
-      SkeletonException exc =  GeneralException(
+      Exception exc =  GeneralException(
         error.toString(), ExceptionTypes.REQUEST_ERROR,
       );
       locator<ErrorService>().setError(exc);

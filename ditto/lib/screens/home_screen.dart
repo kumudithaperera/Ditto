@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final _appData = AppData.getInstance;
+  final _contentVariables = ContentVariables.getInstance;
 
   HomeScreenBloc _homeScreenBloc;
   SignInSignUpBloc _signInSignUpBloc;
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _appData.points ? Container(
+                        _contentVariables.points ? Container(
                           margin: EdgeInsets.only(top: 30.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -204,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ): Container(
                           margin: EdgeInsets.only(top: 30.0),
                         ),
-                        _appData.pointsLeaderboard ? Container(
+                        _contentVariables.pointsLeaderboard ? Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -219,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: LeaderBoardWidget(
-                                      isIntrovert: _appData.points ? true : false,
+                                      isIntrovert: _contentVariables.points ? true : false,
                                     ),
                                   ),
                                 ),
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ) : Container(),
-                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                        _contentVariables.achievementsBadges ? StreamBuilder<bool>(
                             stream: _homeScreenBloc.isDoneStream,
                             initialData: false,
                             builder: (context, snapshotVal) {
@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             }
                         ): Container(),
-                        _appData.timeLeaderboard ? StreamBuilder<bool>(
+                        _contentVariables.timeLeaderboard ? StreamBuilder<bool>(
                             initialData: false,
                             stream: _homeScreenBloc.marksBadgeStream,
                             builder: (context, snapshot) {
@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ): Container();
                             }
                         ) : Container(),
-                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                        _contentVariables.achievementsBadges ? StreamBuilder<bool>(
                             initialData: false,
                             stream: _homeScreenBloc.timeBadgeStream,
                             builder: (context, snapshot) {
@@ -325,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ): Container();
                             }
                         ): Container(),
-                        _appData.progressBar ? SingleChildScrollView(
+                        _contentVariables.progressBar ? SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [

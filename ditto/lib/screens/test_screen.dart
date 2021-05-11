@@ -18,7 +18,7 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateMixin {
 
-  final _appData = AppData.getInstance;
+  final _contentVariables = ContentVariables.getInstance;
 
   TestBloc _testBloc;
   AnimationController _controller;
@@ -200,7 +200,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                     return snapshot.hasData ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _appData.time ? Container(
+                        _contentVariables.time ? Container(
                           margin: EdgeInsets.only(top: 30.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -221,7 +221,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                             ],
                           ),
                         ) : Container(),
-                        _appData.timeLeaderboard ? Container(
+                        _contentVariables.timeLeaderboard ? Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -236,7 +236,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                                       BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: LeaderBoardWidget(
-                                      isIntrovert: _appData.time ? true : false,
+                                      isIntrovert: _contentVariables.time ? true : false,
                                       lastKey: 'time',
                                       orderBy: 'time',
                                       descending: false,
@@ -247,7 +247,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                             ],
                           ),
                         ) : Container(),
-                        _appData.achievementsBadges ? Padding(
+                        _contentVariables.achievementsBadges ? Padding(
                           padding: EdgeInsets.only(left: Utils.getDesignWidth(1.0)),
                           child: Text(
                               "Achievements & Badges",
@@ -258,7 +258,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                               )
                           ),
                         ): Container(),
-                        _appData.timeLeaderboard ? StreamBuilder<bool>(
+                        _contentVariables.timeLeaderboard ? StreamBuilder<bool>(
                             initialData: false,
                             stream: _testBloc.marksBadgeStream,
                             builder: (context, snapshot) {
@@ -292,7 +292,7 @@ class _TestScreenState extends State<TestScreen> with SingleTickerProviderStateM
                               );
                             }
                         ) : Container(),
-                        _appData.achievementsBadges ? StreamBuilder<bool>(
+                        _contentVariables.achievementsBadges ? StreamBuilder<bool>(
                             initialData: false,
                             stream: _testBloc.timeBadgeStream,
                             builder: (context, snapshot) {

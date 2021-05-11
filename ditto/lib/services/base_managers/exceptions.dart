@@ -1,6 +1,6 @@
 import '../../helper/enums.dart';
 
-abstract class SkeletonException {
+abstract class Exception {
   ExceptionTypes type;
   String message;
   bool isSuccess;

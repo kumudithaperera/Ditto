@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   SettingsScreenBloc _settingsScreenBloc;
 
   StreamSubscription _errorSubscription;
-  Stream<SkeletonException> _prevErrorStream;
+  Stream<Exception> _prevErrorStream;
 
   @override
   void initState() {

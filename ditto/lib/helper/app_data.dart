@@ -1,11 +1,10 @@
-import 'package:ditto/helper/enums.dart';
-
-class AppData {
+class ContentVariables {
 
   //Singleton
-  AppData._privateConstructor();
-  static final AppData _instance = AppData._privateConstructor();
-  static AppData get getInstance => _instance;
+  //Instantiated once, and can provide easy access to the single instance
+  ContentVariables._privateConstructor();
+  static final ContentVariables _instance = ContentVariables._privateConstructor();
+  static ContentVariables get getInstance => _instance;
 
   bool achievementsBadges;
   bool pointsLeaderboard;

@@ -1,7 +1,7 @@
 import 'package:ditto/services/base_managers/exceptions.dart';
 
 class Error {
-  final SkeletonException exception;
+  final Exception exception;
   final StackTrace stackTrace;
 
   Error(this.exception, this.stackTrace);
